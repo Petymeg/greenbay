@@ -12,8 +12,7 @@ export const userRepository = {
   },
   async createInitialUserIfDbIsEmpty(): Promise<void> {
     const dbUsers = await userRepository.getUsers();
-    if (dbUsers.length > 0)
-      return console.log('Users table is already populated');
+    if (dbUsers.length > 0) return console.log('Users table is populated');
 
     const query = `INSERT INTO
                     users
@@ -28,6 +27,6 @@ export const userRepository = {
 
     await db.query(query);
 
-    return console.log('Base users created');
+    return console.log('Users table was empty, base users added');
   },
 };
