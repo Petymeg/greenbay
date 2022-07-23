@@ -1,3 +1,4 @@
+import { OkPacket } from 'mysql';
 import { db } from '../data/connection';
 import { UserDomainModel } from '../models/domain/UserDomainModel';
 
@@ -28,5 +29,29 @@ export const userRepository = {
     await db.query(query);
 
     return console.log('Users table was empty, base users added');
+  },
+  async getUserByName(username: string): Promise<UserDomainModel> {
+    const query = `SELECT
+                    *
+                  FROM
+                    users
+                  WHERE
+                    name = ?`;
+
+    const userList = await db.query<UserDomainModel[]>(query, [username]);
+
+    return userList[0];
+  },
+  async register(username: string, password: string): Promise<number> {
+    const query = `INSERT INTO
+                    users
+                    (name, password)
+                  VALUES
+                    (?, ?);
+                  `;
+
+    const result = await db.query<OkPacket>(query, [username, password]);
+
+    return result.insertId;
   },
 };
