@@ -46,4 +46,42 @@ const productRouter = express.Router();
  */
 productRouter.post('/add', productController.addUserProduct);
 
+/**
+ * @swagger
+ * /api/product/delete:
+ *  delete:
+ *      tags:
+ *      - PRODUCT
+ *      description: Delete a product listing
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *          - in: body
+ *            name: productDetails
+ *            description: Provide the necessary details for the listing
+ *            schema:
+ *              type: object
+ *              properties:
+ *                productId:
+ *                  type: number
+ *                  example: 1
+ *      responses:
+ *          204:
+ *              description: Listing deleted
+ *          400:
+ *              description: productId missing from request body
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: Forbidden - Product doesn't belong to logged in user
+ *          404:
+ *              description: Product not found
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.delete('/delete', productController.deleteProduct);
+
 export default productRouter;
