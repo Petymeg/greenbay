@@ -1,10 +1,8 @@
+import { UserLoginViewModel } from '../models/view/UserLoginViewModel';
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { userRepository } from '../repositories/user.repository';
-import {
-  badRequestError,
-  conflictError,
-  unauthorizedError,
-} from './generalErrorService';
+import { conflictError, unauthorizedError } from './generalErrorService';
+import { jwtService } from './JwtService';
 import { passwordService } from './passwordService';
 
 export const userService = {
@@ -20,10 +18,11 @@ export const userService = {
 
     const userId = await userRepository.register(username, hashedPassword);
 
+    const token = jwtService.generateAccessToken(userId, username, 2);
+
     return {
-      id: userId,
+      token,
       username,
-      roleId: 2,
     };
   },
 
@@ -32,10 +31,7 @@ export const userService = {
     return userData ? true : false;
   },
 
-  async login(
-    username: string,
-    password: string
-  ): Promise<UserRegistrationViewModel> {
+  async login(username: string, password: string): Promise<UserLoginViewModel> {
     const userData = await userRepository.getUserByName(username);
 
     if (
@@ -45,10 +41,15 @@ export const userService = {
       throw unauthorizedError('Username or password is incorrect!');
     }
 
+    const token = jwtService.generateAccessToken(
+      userData.id,
+      username,
+      userData.roleId
+    );
+
     return {
-      id: userData.id,
-      username: userData.name,
-      roleId: userData.roleId,
+      token,
+      username,
     };
   },
 };

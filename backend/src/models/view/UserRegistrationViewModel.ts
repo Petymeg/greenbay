@@ -1,5 +1,4 @@
 export interface UserRegistrationViewModel {
-  id: number;
+  token: string;
   username: string;
-  roleId: number;
 }
