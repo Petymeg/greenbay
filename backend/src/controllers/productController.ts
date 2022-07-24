@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AddUserProductRequestViewModel } from '../models/view/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from '../models/view/AddUserProductViewModel';
+import { DeleteUserProductRequestViewModel } from '../models/view/DeleteUserProductRequestViewModel';
 import { badRequestError } from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
 import { productService } from '../services/productService';
@@ -35,6 +36,25 @@ export const productController = {
     try {
       const productId = await productService.addUserProduct(productDetails);
       res.status(201).send({ productId });
+    } catch (err) {
+      next(err);
+    }
+  },
+  async deleteProduct(
+    req: Request<DeleteUserProductRequestViewModel>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { productId } = req.body;
+
+    if (!productId) return next(badRequestError('productId is missing!'));
+
+    const token = jwtService.getTokenFromRequest(req);
+    const { userId } = jwtService.getTokenPayload(token);
+
+    try {
+      await productService.deleteProduct(productId, userId);
+      res.status(204).send();
     } catch (err) {
       next(err);
     }
