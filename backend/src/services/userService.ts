@@ -4,8 +4,8 @@ import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewMo
 import { userRepository } from '../repositories/user.repository';
 import {
   conflictError,
+  forbiddenError,
   notFoundError,
-  unauthorizedError,
 } from './generalErrorService';
 import { jwtService } from './JwtService';
 import { passwordService } from './passwordService';
@@ -43,7 +43,7 @@ export const userService = {
       !userData ||
       !passwordService.comparePasswords(password, userData.password)
     ) {
-      throw unauthorizedError('Username or password is incorrect!');
+      throw forbiddenError('Username or password is incorrect!');
     }
 
     const token = jwtService.generateAccessToken(
