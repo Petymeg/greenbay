@@ -1,9 +1,7 @@
-export interface UserProductsDomainModel {
-  id: number;
+export interface AddUserProductRequestModel {
   name: string;
   description: string;
   imgUrl: string;
   price: number;
-  active: boolean;
   userId: number;
 }

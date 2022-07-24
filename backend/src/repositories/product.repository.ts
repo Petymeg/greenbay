@@ -1,9 +1,11 @@
 import { OkPacket } from 'mysql';
 import { db } from '../data/connection';
-import { AddProductRequestModel } from '../models/common/AddProductRequestModel';
+import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
 
 export const productRepository = {
-  async addNewProduct(productDetails: AddProductRequestModel): Promise<number> {
+  async addNewProduct(
+    productDetails: AddUserProductRequestModel
+  ): Promise<number> {
     const { name, description, imgUrl, price, userId } = productDetails;
 
     const query = `INSERT INTO
