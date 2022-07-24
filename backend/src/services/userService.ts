@@ -1,7 +1,12 @@
+import { UserDomainModel } from '../models/domain/UserDomainModel';
 import { UserLoginViewModel } from '../models/view/UserLoginViewModel';
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { userRepository } from '../repositories/user.repository';
-import { conflictError, unauthorizedError } from './generalErrorService';
+import {
+  conflictError,
+  notFoundError,
+  unauthorizedError,
+} from './generalErrorService';
 import { jwtService } from './JwtService';
 import { passwordService } from './passwordService';
 
@@ -51,5 +56,14 @@ export const userService = {
       token,
       username,
     };
+  },
+
+  async getUserById(userId: number): Promise<UserDomainModel> {
+    const userDBData = await userRepository.getUserById(userId);
+
+    if (!userDBData) {
+      throw notFoundError('userId not found.');
+    }
+    return userDBData;
   },
 };
