@@ -4,6 +4,9 @@
 
 - NodeJS
   - Express
+  - Dotenv
   - MySQL
   - DB-Migrate
+  - Bcrypt
+  - JWT
   - Swagger
