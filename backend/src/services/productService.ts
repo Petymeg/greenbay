@@ -12,7 +12,7 @@ export const productService = {
     return await productRepository.addUserProduct(productDetails);
   },
 
-  async deleteProduct(productId: number, userId: number): Promise<void> {
+  async deleteProduct(productId: number, userId: number): Promise<string> {
     const productDetails = await productRepository.getProductById(productId);
 
     if (!productDetails) throw notFoundError('Product with this ID not found');
@@ -23,5 +23,7 @@ export const productService = {
       );
 
     await productRepository.deleteProductById(productId);
+
+    return `Listing for "${productId} - ${productDetails.name}" deleted`;
   },
 };

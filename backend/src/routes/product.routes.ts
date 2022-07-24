@@ -69,7 +69,7 @@ productRouter.post('/add', productController.addUserProduct);
  *                  type: number
  *                  example: 1
  *      responses:
- *          204:
+ *          200:
  *              description: Listing deleted
  *          400:
  *              description: productId missing from request body

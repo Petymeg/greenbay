@@ -53,8 +53,8 @@ export const productController = {
     const { userId } = jwtService.getTokenPayload(token);
 
     try {
-      await productService.deleteProduct(productId, userId);
-      res.status(204).send();
+      const result = await productService.deleteProduct(productId, userId);
+      res.status(200).send(result);
     } catch (err) {
       next(err);
     }
