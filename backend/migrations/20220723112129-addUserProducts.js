@@ -27,6 +27,7 @@ exports.up = function (db) {
       name: { type: 'string', notNull: true },
       description: { type: 'string', notNull: true },
       imgUrl: { type: 'string', notNull: true },
+      active: { type: 'boolean', notNull: true, defaultValue: true },
       userId: {
         type: 'int',
         notNull: true,
