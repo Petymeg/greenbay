@@ -1,6 +1,7 @@
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { userRepository } from '../repositories/user.repository';
 import { conflictError } from './generalErrorService';
+import { passwordService } from './passwordService';
 
 export const userService = {
   async register(
@@ -11,13 +12,16 @@ export const userService = {
       throw conflictError('Username is already taken.');
     }
 
-    const userId = await userRepository.register(username, password);
+    const hashedPassword = passwordService.generateHash(password);
+
+    const userId = await userRepository.register(username, hashedPassword);
 
     return {
       id: userId,
       name: username,
     };
   },
+
   async checkIfUsernameExists(username: string): Promise<boolean> {
     const userData = await userRepository.getUserByName(username);
     return userData ? true : false;
