@@ -13,7 +13,7 @@ export const productController = {
   ) {
     const { name, description, imgUrl, price } = req.body;
 
-    if (!name || !description || !imgUrl || price) {
+    if (!name || !description || !imgUrl || !price) {
       return next(
         badRequestError(
           'name, description, image URL and price are all required!'
