@@ -5,7 +5,7 @@ const productRouter = express.Router();
 
 /**
  * @swagger
- * /api/product/add:
+ * /api/product:
  *  post:
  *      tags:
  *      - PRODUCT
@@ -44,11 +44,11 @@ const productRouter = express.Router();
  *          500:
  *              description: Internal server error
  */
-productRouter.post('/add', productController.addUserProduct);
+productRouter.post('', productController.addUserProduct);
 
 /**
  * @swagger
- * /api/product/delete:
+ * /api/product/{productId}:
  *  delete:
  *      tags:
  *      - PRODUCT
@@ -59,15 +59,12 @@ productRouter.post('/add', productController.addUserProduct);
  *            schema:
  *              type: string
  *              example: Bearer rh4b5b435njfd
- *          - in: body
- *            name: productDetails
- *            description: Provide the necessary details for the listing
+ *          - in: path
+ *            name: productId
+ *            description: Product ID to be deleted
  *            schema:
- *              type: object
- *              properties:
- *                productId:
- *                  type: number
- *                  example: 1
+ *              type: number
+ *              example: 1
  *      responses:
  *          200:
  *              description: Listing deleted
@@ -82,6 +79,6 @@ productRouter.post('/add', productController.addUserProduct);
  *          500:
  *              description: Internal server error
  */
-productRouter.delete('/delete', productController.deleteProduct);
+productRouter.delete('/:productId', productController.deleteProduct);
 
 export default productRouter;

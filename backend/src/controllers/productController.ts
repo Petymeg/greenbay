@@ -45,7 +45,7 @@ export const productController = {
     res: Response,
     next: NextFunction
   ) {
-    const { productId } = req.body;
+    const { productId } = req.params;
 
     if (!productId) return next(badRequestError('productId is missing!'));
 
