@@ -3,7 +3,7 @@ import { db } from '../data/connection';
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
 
 export const productRepository = {
-  async addNewProduct(
+  async addUserProduct(
     productDetails: AddUserProductRequestModel
   ): Promise<number> {
     const { name, description, imgUrl, price, userId } = productDetails;
