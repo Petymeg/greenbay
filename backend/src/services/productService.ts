@@ -35,6 +35,7 @@ export const productService = {
       return {
         id: x.id,
         name: x.name,
+        description: x.description,
         imgUrl: x.imgUrl,
         price: x.price,
         owner: {
