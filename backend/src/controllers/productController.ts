@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { AddUserProductRequestViewModel } from '../models/view/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from '../models/view/AddUserProductViewModel';
 import { DeleteUserProductRequestViewModel } from '../models/view/DeleteUserProductRequestViewModel';
+import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { badRequestError } from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
 import { productService } from '../services/productService';
@@ -55,6 +56,20 @@ export const productController = {
     try {
       const result = await productService.deleteProduct(productId, userId);
       res.status(200).send(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getSellableProducts(
+    req: Request,
+    res: Response<ProductWithOwnerViewModel[]>,
+    next: NextFunction
+  ) {
+    try {
+      const sellableProducts = await productService.getSellableProducts();
+
+      res.status(200).send(sellableProducts);
     } catch (err) {
       next(err);
     }
