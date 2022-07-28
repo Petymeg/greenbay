@@ -85,7 +85,7 @@ productRouter.get('/:productId', productController.getProduct);
  *  delete:
  *      tags:
  *      - PRODUCT
- *      description: Delete a product listing
+ *      description: Delist a product
  *      parameters:
  *          - in: header
  *            name: authorization
@@ -112,7 +112,7 @@ productRouter.get('/:productId', productController.getProduct);
  *          500:
  *              description: Internal server error
  */
-productRouter.delete('/:productId', productController.deleteProduct);
+productRouter.delete('/:productId', productController.delistProduct);
 
 /**
  * @swagger

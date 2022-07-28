@@ -42,11 +42,13 @@ export const productRepository = {
     return productDetails[0];
   },
 
-  async deleteProductById(productId: number): Promise<void> {
-    const query = `DELETE FROM
-                        userProducts
+  async delistProductById(productId: number): Promise<void> {
+    const query = `UPDATE
+                      userProducts
+                    SET                      
+                      active = 0
                     WHERE
-                        id = ?;`;
+                      id = ?;`;
 
     await db.query(query, [`${productId}`]);
   },

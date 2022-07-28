@@ -17,17 +17,20 @@ export const productService = {
     return await productRepository.addUserProduct(productDetails);
   },
 
-  async deleteProduct(productId: number, userId: number): Promise<string> {
+  async delistProduct(productId: number, userId: number): Promise<string> {
     const productDetails = await productRepository.getProductById(productId);
 
     if (!productDetails) throw notFoundError('Product with this ID not found');
 
     if (userId !== productDetails.userId)
       throw unauthorizedError(
-        "You can't delete this product, it doesn't belong to you!"
+        "You can't delist this product, it doesn't belong to you!"
       );
 
-    await productRepository.deleteProductById(productId);
+    if (!productDetails.active)
+      throw forbiddenError('Product is already inactive');
+
+    await productRepository.delistProductById(productId);
 
     return `Listing for "${productId} - ${productDetails.name}" deleted`;
   },

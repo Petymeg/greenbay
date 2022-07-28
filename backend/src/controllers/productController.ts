@@ -41,7 +41,7 @@ export const productController = {
       next(err);
     }
   },
-  async deleteProduct(req: Request, res: Response, next: NextFunction) {
+  async delistProduct(req: Request, res: Response, next: NextFunction) {
     const { productId } = req.params;
 
     if (!productId) return next(badRequestError('productId is missing!'));
@@ -50,7 +50,7 @@ export const productController = {
     const { userId } = jwtService.getTokenPayload(token);
 
     try {
-      const result = await productService.deleteProduct(+productId, userId);
+      const result = await productService.delistProduct(+productId, userId);
       res.status(200).send(result);
     } catch (err) {
       next(err);
