@@ -81,4 +81,25 @@ productRouter.post('', productController.addUserProduct);
  */
 productRouter.delete('/:productId', productController.deleteProduct);
 
+/**
+ * @swagger
+ * /api/product:
+ *  get:
+ *      tags:
+ *      - PRODUCT
+ *      description: Get all sellable products
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *      responses:
+ *          200:
+ *              description: Data provided
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.get('', productController.getSellableProducts);
+
 export default productRouter;
