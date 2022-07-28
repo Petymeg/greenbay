@@ -78,7 +78,7 @@ export const productRepository = {
                     ON
                       p.userId = u.id
                     WHERE
-                        id = ?;`;
+                        p.id = ?;`;
 
     const productDetails = await db.query<ProductWithOwnerDomainModel[]>(
       query,
