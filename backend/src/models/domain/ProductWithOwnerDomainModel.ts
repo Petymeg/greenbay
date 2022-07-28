@@ -4,6 +4,7 @@ export interface ProductWithOwnerDomainModel {
   description: string;
   imgUrl: string;
   price: number;
+  active: boolean;
   userId: number;
   userName: string;
 }

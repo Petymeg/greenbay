@@ -65,4 +65,26 @@ export const productRepository = {
 
     return db.query<ProductWithOwnerDomainModel[]>(query);
   },
+
+  async getProductWithOwnerById(
+    productId: number
+  ): Promise<ProductWithOwnerDomainModel> {
+    const query = `SELECT
+                    *, p.id as id, p.name as name, u.id as userId, u.name as userName
+                    FROM
+                      userProducts p
+                    JOIN
+                      users u
+                    ON
+                      p.userId = u.id
+                    WHERE
+                        id = ?;`;
+
+    const productDetails = await db.query<ProductWithOwnerDomainModel[]>(
+      query,
+      [`${productId}`]
+    );
+
+    return productDetails[0];
+  },
 };
