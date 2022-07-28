@@ -41,11 +41,7 @@ export const productController = {
       next(err);
     }
   },
-  async deleteProduct(
-    req: Request<DeleteUserProductRequestViewModel>,
-    res: Response,
-    next: NextFunction
-  ) {
+  async deleteProduct(req: Request, res: Response, next: NextFunction) {
     const { productId } = req.params;
 
     if (!productId) return next(badRequestError('productId is missing!'));
@@ -54,7 +50,7 @@ export const productController = {
     const { userId } = jwtService.getTokenPayload(token);
 
     try {
-      const result = await productService.deleteProduct(productId, userId);
+      const result = await productService.deleteProduct(+productId, userId);
       res.status(200).send(result);
     } catch (err) {
       next(err);
@@ -70,6 +66,23 @@ export const productController = {
       const sellableProducts = await productService.getSellableProducts();
 
       res.status(200).send(sellableProducts);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async getProduct(
+    req: Request,
+    res: Response<ProductWithOwnerViewModel>,
+    next: NextFunction
+  ) {
+    const { productId } = req.params;
+
+    if (!productId) return next(badRequestError('productId is missing!'));
+
+    try {
+      const result = await productService.getProductById(+productId);
+      res.status(200).send(result);
     } catch (err) {
       next(err);
     }
