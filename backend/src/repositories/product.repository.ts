@@ -51,9 +51,9 @@ export const productRepository = {
     await db.query(query, [`${productId}`]);
   },
 
-  async getActiveProducts(): Promise<ProductWithOwnerDomainModel[]> {
+  async getSellableProducts(): Promise<ProductWithOwnerDomainModel[]> {
     const query = `SELECT
-                      *, p.id as id, u.id as userId, u.name as userName
+                      *, p.id as id, p.name as name, u.id as userId, u.name as userName
                     FROM
                       userProducts p
                     JOIN
