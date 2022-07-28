@@ -1,6 +1,7 @@
 import { OkPacket } from 'mysql';
 import { db } from '../data/connection';
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
+import { ProductWithOwnerDomainModel } from '../models/domain/ProductWithOwnerDomainModel';
 import { UserProductDomainModel } from '../models/domain/UserProductDomainModel';
 
 export const productRepository = {
@@ -48,5 +49,20 @@ export const productRepository = {
                         id = ?;`;
 
     await db.query(query, [`${productId}`]);
+  },
+
+  async getActiveProducts(): Promise<ProductWithOwnerDomainModel[]> {
+    const query = `SELECT
+                      *, p.id as id, u.id as userId, u.name as userName
+                    FROM
+                      userProducts p
+                    JOIN
+                      users u
+                    ON
+                      p.userId = u.id
+                    WHERE
+                      active = 1`;
+
+    return db.query<ProductWithOwnerDomainModel[]>(query);
   },
 };
