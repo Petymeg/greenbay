@@ -1,7 +1,11 @@
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { productRepository } from '../repositories/product.repository';
-import { notFoundError, unauthorizedError } from './generalErrorService';
+import {
+  forbiddenError,
+  notFoundError,
+  unauthorizedError,
+} from './generalErrorService';
 import { userService } from './userService';
 
 export const productService = {
@@ -44,5 +48,28 @@ export const productService = {
         },
       };
     });
+  },
+
+  async getProductById(productId: number): Promise<ProductWithOwnerViewModel> {
+    const productDetails = await productRepository.getProductWithOwnerById(
+      productId
+    );
+
+    if (!productDetails) throw notFoundError('Product with this ID not found');
+
+    if (!productDetails.active)
+      throw forbiddenError('This product is not available');
+
+    return {
+      id: productDetails.id,
+      name: productDetails.name,
+      description: productDetails.description,
+      imgUrl: productDetails.imgUrl,
+      price: productDetails.price,
+      owner: {
+        id: productDetails.userId,
+        name: productDetails.userName,
+      },
+    };
   },
 };
