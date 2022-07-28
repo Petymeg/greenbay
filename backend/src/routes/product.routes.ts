@@ -49,6 +49,39 @@ productRouter.post('', productController.addUserProduct);
 /**
  * @swagger
  * /api/product/{productId}:
+ *  get:
+ *      tags:
+ *      - PRODUCT
+ *      description: Get a product listing
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *          - in: path
+ *            name: productId
+ *            description: Product ID to be deleted
+ *            schema:
+ *              type: number
+ *              example: 1
+ *      responses:
+ *          200:
+ *              description: Listing returned
+ *          400:
+ *              description: productId missing from request body
+ *          403:
+ *              description: Forbidden - Product is not active
+ *          404:
+ *              description: Product not found
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.get('/:productId', productController.getProduct);
+
+/**
+ * @swagger
+ * /api/product/{productId}:
  *  delete:
  *      tags:
  *      - PRODUCT
