@@ -1,4 +1,5 @@
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
+import { EditProductRequestModel } from '../models/common/EditProductRequestModel';
 import { UserProductDomainModel } from '../models/domain/UserProductDomainModel';
 import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
@@ -106,5 +107,28 @@ export const productService = {
     if (!productData) throw notFoundError('Product with this ID not found');
 
     return productData;
+  },
+
+  async editProduct(productDetails: EditProductRequestModel): Promise<void> {
+    const { productId, name, description, imgUrl, price, userId } =
+      productDetails;
+    const productDBData = await this.getProductDBData(productId);
+    const userDBData = userService.getUserById(userId);
+
+    if (productDBData.userId !== userId)
+      throw forbiddenError(
+        "You can't edit this product, it doesn't belong to you!"
+      );
+
+    if (productDBData.status === ProductStatusTypes.Sold)
+      throw forbiddenError('Product is already sold, cannot be edited');
+
+    await productRepository.editProductById(
+      productId,
+      name,
+      description,
+      imgUrl,
+      price
+    );
   },
 };
