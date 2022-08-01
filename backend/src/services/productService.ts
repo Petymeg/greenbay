@@ -95,7 +95,7 @@ export const productService = {
 
     const sellerData = await userService.getUserById(productData.userId);
 
-    await productRepository.delistProductById(productId);
+    await productRepository.setProductToSoldById(productId);
     await userRepository.deductProductPrice(userId, productData.price);
     await userRepository.addSoldProductPrice(
       productData.userId,

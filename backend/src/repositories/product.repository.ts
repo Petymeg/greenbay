@@ -53,6 +53,17 @@ export const productRepository = {
     await db.query(query, [`${productId}`]);
   },
 
+  async setProductToSoldById(productId: number): Promise<void> {
+    const query = `UPDATE
+                      userProducts
+                    SET                      
+                      status = 3
+                    WHERE
+                      id = ?;`;
+
+    await db.query(query, [`${productId}`]);
+  },
+
   async getSellableProducts(): Promise<ProductWithOwnerDomainModel[]> {
     const query = `SELECT
                       *, p.id as id, p.name as name, u.id as userId, u.name as userName
