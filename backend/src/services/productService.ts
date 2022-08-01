@@ -1,4 +1,5 @@
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
+import { UserProductDomainModel } from '../models/domain/UserProductDomainModel';
 import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { productRepository } from '../repositories/product.repository';
@@ -20,21 +21,19 @@ export const productService = {
   },
 
   async delistProduct(productId: number, userId: number): Promise<string> {
-    const productDetails = await productRepository.getProductById(productId);
+    const productData = await this.getProductDBData(productId);
 
-    if (!productDetails) throw notFoundError('Product with this ID not found');
-
-    if (userId !== productDetails.userId)
+    if (userId !== productData.userId)
       throw unauthorizedError(
         "You can't delist this product, it doesn't belong to you!"
       );
 
-    if (productDetails.status !== ProductStatusTypes.Active)
+    if (productData.status !== ProductStatusTypes.Active)
       throw forbiddenError('Product is not sellable, cannot be delisted');
 
     await productRepository.delistProductById(productId);
 
-    return `Listing for "${productId} - ${productDetails.name}" deleted`;
+    return `Listing for "${productId} - ${productData.name}" deleted`;
   },
 
   async getSellableProducts(): Promise<ProductWithOwnerViewModel[]> {
@@ -79,10 +78,8 @@ export const productService = {
   },
 
   async buyProduct(productId: number, userId: number): Promise<void> {
-    const productData = await productRepository.getProductById(productId);
+    const productData = await this.getProductDBData(productId);
     const buyerData = await userService.getUserById(userId);
-
-    if (!productData) throw notFoundError('Product with this ID not found');
 
     if (productData.userId === userId)
       throw forbiddenError('Cannot buy item, it belongs to you!');
@@ -101,5 +98,13 @@ export const productService = {
       productData.userId,
       productData.price
     );
+  },
+
+  async getProductDBData(productId: number): Promise<UserProductDomainModel> {
+    const productData = await productRepository.getProductById(productId);
+
+    if (!productData) throw notFoundError('Product with this ID not found');
+
+    return productData;
   },
 };
