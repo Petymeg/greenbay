@@ -46,7 +46,7 @@ export const productRepository = {
     const query = `UPDATE
                       userProducts
                     SET                      
-                      active = 0
+                      status = 0
                     WHERE
                       id = ?;`;
 
@@ -63,7 +63,7 @@ export const productRepository = {
                     ON
                       p.userId = u.id
                     WHERE
-                      active = 1`;
+                      status = 1`;
 
     return db.query<ProductWithOwnerDomainModel[]>(query);
   },
@@ -80,7 +80,7 @@ export const productRepository = {
                     ON
                       p.userId = u.id
                     WHERE
-                        p.id = ?;`;
+                      p.id = ?;`;
 
     const productDetails = await db.query<ProductWithOwnerDomainModel[]>(
       query,

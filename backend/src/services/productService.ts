@@ -1,4 +1,5 @@
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
+import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { productRepository } from '../repositories/product.repository';
 import { userRepository } from '../repositories/user.repository';
@@ -28,7 +29,7 @@ export const productService = {
         "You can't delist this product, it doesn't belong to you!"
       );
 
-    if (!productDetails.active)
+    if (productDetails.status === ProductStatusTypes.Inactive)
       throw forbiddenError('Product is already inactive');
 
     await productRepository.delistProductById(productId);
@@ -61,7 +62,7 @@ export const productService = {
 
     if (!productDetails) throw notFoundError('Product with this ID not found');
 
-    if (!productDetails.active)
+    if (productDetails.status !== ProductStatusTypes.Active)
       throw forbiddenError('This product is not available');
 
     return {
@@ -86,7 +87,7 @@ export const productService = {
     if (productData.userId === userId)
       throw forbiddenError('Cannot buy item, it belongs to you!');
 
-    if (!productData.active)
+    if (productData.status !== ProductStatusTypes.Active)
       throw forbiddenError('Product not available for buying');
 
     if (productData.price > buyerData.money)
