@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { AddUserProductRequestViewModel } from '../models/view/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from '../models/view/AddUserProductViewModel';
+import { BuyProductRequestViewModel } from '../models/view/BuyProductRequestViewModel';
 import { DeleteUserProductRequestViewModel } from '../models/view/DeleteUserProductRequestViewModel';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { badRequestError } from '../services/generalErrorService';
@@ -83,6 +84,25 @@ export const productController = {
     try {
       const result = await productService.getProductById(+productId);
       res.status(200).send(result);
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async buyProduct(
+    req: Request<BuyProductRequestViewModel>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { productId } = req.body;
+
+    if (!productId) {
+      return next(badRequestError('Please provide a productId'));
+    }
+
+    try {
+      await productService.buyProduct(+productId);
+      res.status(200).send();
     } catch (err) {
       next(err);
     }
