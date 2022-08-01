@@ -29,8 +29,8 @@ export const productService = {
         "You can't delist this product, it doesn't belong to you!"
       );
 
-    if (productDetails.status === ProductStatusTypes.Inactive)
-      throw forbiddenError('Product is already inactive');
+    if (productDetails.status !== ProductStatusTypes.Active)
+      throw forbiddenError('Product is not sellable, cannot be delisted');
 
     await productRepository.delistProductById(productId);
 
