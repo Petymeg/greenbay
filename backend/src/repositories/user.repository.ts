@@ -67,4 +67,26 @@ export const userRepository = {
 
     return userList[0];
   },
+
+  async deductProductPrice(userId: number, price: number): Promise<void> {
+    const query = `UPDATE
+                      users
+                    SET
+                      money = money - ?
+                    WHERE
+                      id = ?;`;
+
+    await db.query(query, [`${price}`, `${userId}`]);
+  },
+
+  async addSoldProductPrice(userId: number, price: number): Promise<void> {
+    const query = `UPDATE
+                      users
+                    SET
+                      money = money + ?
+                    WHERE
+                      id = ?;`;
+
+    await db.query(query, [`${price}`, `${userId}`]);
+  },
 };
