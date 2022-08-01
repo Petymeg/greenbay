@@ -135,4 +135,40 @@ productRouter.delete('/:productId', productController.delistProduct);
  */
 productRouter.get('', productController.getSellableProducts);
 
+/**
+ * @swagger
+ * /api/product/buy:
+ *  get:
+ *      tags:
+ *      - PRODUCT
+ *      description: Buy a product
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *          - in: body
+ *            name: productId
+ *            description: Provide the id of the product you'd like to buy
+ *            schema:
+ *              type: object
+ *              properties:
+ *                productId:
+ *                  type: number
+ *                  example: 12
+ *      responses:
+ *          200:
+ *              description: Item bought
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: Item not available to buy
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.get('/buy', productController.buyProduct);
+
 export default productRouter;
