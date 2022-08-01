@@ -165,7 +165,9 @@ productRouter.get('', productController.getSellableProducts);
  *          401:
  *              description: Unauthorized
  *          403:
- *              description: Item not available to buy
+ *              description: Item not available for buying
+ *          404:
+ *              description: Item not found
  *          500:
  *              description: Internal server error
  */
