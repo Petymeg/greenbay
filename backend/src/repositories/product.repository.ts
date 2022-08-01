@@ -3,6 +3,7 @@ import { db } from '../data/connection';
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
 import { ProductWithOwnerDomainModel } from '../models/domain/ProductWithOwnerDomainModel';
 import { UserProductDomainModel } from '../models/domain/UserProductDomainModel';
+import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 
 export const productRepository = {
   async addUserProduct(
@@ -46,22 +47,22 @@ export const productRepository = {
     const query = `UPDATE
                       userProducts
                     SET                      
-                      status = 0
+                      status = ?
                     WHERE
                       id = ?;`;
 
-    await db.query(query, [`${productId}`]);
+    await db.query(query, [`${ProductStatusTypes.Inactive}`, `${productId}`]);
   },
 
   async setProductToSoldById(productId: number): Promise<void> {
     const query = `UPDATE
                       userProducts
                     SET                      
-                      status = 3
+                      status = ?
                     WHERE
                       id = ?;`;
 
-    await db.query(query, [`${productId}`]);
+    await db.query(query, [`${ProductStatusTypes.Sold}`, `${productId}`]);
   },
 
   async getSellableProducts(): Promise<ProductWithOwnerDomainModel[]> {
@@ -74,9 +75,11 @@ export const productRepository = {
                     ON
                       p.userId = u.id
                     WHERE
-                      status = 1`;
+                      status = ?`;
 
-    return db.query<ProductWithOwnerDomainModel[]>(query);
+    return db.query<ProductWithOwnerDomainModel[]>(query, [
+      `${ProductStatusTypes.Active}`,
+    ]);
   },
 
   async getProductWithOwnerById(
