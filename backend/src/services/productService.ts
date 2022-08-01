@@ -80,18 +80,19 @@ export const productService = {
   async buyProduct(productId: number, userId: number): Promise<void> {
     const productData = await productRepository.getProductById(productId);
     const buyerData = await userService.getUserById(userId);
-    const sellerData = await userService.getUserById(productData.userId);
 
     if (!productData) throw notFoundError('Product with this ID not found');
-
-    if (!productData.active)
-      throw forbiddenError('Product not available for buying');
 
     if (productData.userId === userId)
       throw forbiddenError('Cannot buy item, it belongs to you!');
 
+    if (!productData.active)
+      throw forbiddenError('Product not available for buying');
+
     if (productData.price > buyerData.money)
       throw forbiddenError('Cannot buy item, not enough money');
+
+    const sellerData = await userService.getUserById(productData.userId);
 
     await productRepository.delistProductById(productId);
     await userRepository.deductProductPrice(userId, productData.price);
