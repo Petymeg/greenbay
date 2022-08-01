@@ -173,4 +173,57 @@ productRouter.get('', productController.getSellableProducts);
  */
 productRouter.post('/buy', productController.buyProduct);
 
+/**
+ * @swagger
+ * /api/product/{productId}:
+ *  put:
+ *      tags:
+ *      - PRODUCT
+ *      description: Edit a products details
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *          - in: path
+ *            name: productId
+ *            description: ID of product to be edited
+ *            schema:
+ *              type: number
+ *              example: 1
+ *          - in: body
+ *            name: productId
+ *            description: Provide the details of the product you'd like to edit
+ *            schema:
+ *              type: object
+ *              properties:
+ *                name:
+ *                  type: string
+ *                  example: Something great
+ *                description:
+ *                  type: string
+ *                  example: A great new description
+ *                imgUrl:
+ *                  type: string
+ *                  example: https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg
+ *                price:
+ *                  type: number
+ *                  example: 123
+ *      responses:
+ *          200:
+ *              description: Listing edited
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: Forbidden
+ *          404:
+ *              description: Not found
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.put('/:productId', productController.editProduct);
+
 export default productRouter;
