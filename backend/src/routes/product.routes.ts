@@ -52,7 +52,7 @@ productRouter.post('', productController.addUserProduct);
  *  get:
  *      tags:
  *      - PRODUCT
- *      description: Get a product listing
+ *      description: Get a product
  *      parameters:
  *          - in: header
  *            name: authorization
@@ -61,7 +61,7 @@ productRouter.post('', productController.addUserProduct);
  *              example: Bearer rh4b5b435njfd
  *          - in: path
  *            name: productId
- *            description: Product ID to be deleted
+ *            description: ID of product
  *            schema:
  *              type: number
  *              example: 1
