@@ -103,4 +103,30 @@ export const productRepository = {
 
     return productDetails[0];
   },
+
+  async editProductById(
+    productId: number,
+    name: string,
+    description: string,
+    imgUrl: string,
+    price: number
+  ): Promise<void> {
+    const query = `UPDATE 
+                    userProducts
+                  SET
+                    name = ?, 
+                    description = ?, 
+                    imgUrl = ?, 
+                    price = ?
+                  WHERE
+                    id = ?`;
+
+    await db.query(query, [
+      name,
+      description,
+      imgUrl,
+      `${price}`,
+      `${productId}`,
+    ]);
+  },
 };
