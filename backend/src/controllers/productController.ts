@@ -100,8 +100,11 @@ export const productController = {
       return next(badRequestError('Please provide a productId'));
     }
 
+    const token = jwtService.getTokenFromRequest(req);
+    const { userId } = jwtService.getTokenPayload(token);
+
     try {
-      await productService.buyProduct(+productId);
+      await productService.buyProduct(+productId, userId);
       res.status(200).send();
     } catch (err) {
       next(err);
