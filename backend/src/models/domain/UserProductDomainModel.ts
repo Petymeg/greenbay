@@ -4,6 +4,6 @@ export interface UserProductDomainModel {
   description: string;
   imgUrl: string;
   price: number;
-  active: boolean;
+  status: number;
   userId: number;
 }
