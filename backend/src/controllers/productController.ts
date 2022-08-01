@@ -3,6 +3,7 @@ import { AddUserProductRequestViewModel } from '../models/view/AddUserProductReq
 import { AddUserProductViewModel } from '../models/view/AddUserProductViewModel';
 import { BuyProductRequestViewModel } from '../models/view/BuyProductRequestViewModel';
 import { DeleteUserProductRequestViewModel } from '../models/view/DeleteUserProductRequestViewModel';
+import { EditProductRequestViewModel } from '../models/view/EditProductRequestViewModel';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { badRequestError } from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
@@ -105,6 +106,42 @@ export const productController = {
 
     try {
       await productService.buyProduct(+productId, userId);
+      res.status(200).send();
+    } catch (err) {
+      next(err);
+    }
+  },
+
+  async editProduct(
+    req: Request<EditProductRequestViewModel>,
+    res: Response,
+    next: NextFunction
+  ) {
+    const { name, description, imgUrl, price } = req.body;
+    const { productId } = req.params;
+
+    if (!name || !description || !imgUrl || !price) {
+      return next(
+        badRequestError(
+          'Name, description, imgUrl and price are all mandatory. The price cannot be 0.'
+        )
+      );
+    }
+
+    const token = jwtService.getTokenFromRequest(req);
+    const { userId } = jwtService.getTokenPayload(token);
+
+    const requestData = {
+      productId,
+      name,
+      description,
+      imgUrl,
+      price,
+      userId,
+    };
+
+    try {
+      await productService.editProduct(requestData);
       res.status(200).send();
     } catch (err) {
       next(err);
