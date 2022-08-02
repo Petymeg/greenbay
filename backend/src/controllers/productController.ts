@@ -2,7 +2,6 @@ import { NextFunction, Request, Response } from 'express';
 import { AddUserProductRequestViewModel } from '../models/view/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from '../models/view/AddUserProductViewModel';
 import { BuyProductRequestViewModel } from '../models/view/BuyProductRequestViewModel';
-import { DeleteUserProductRequestViewModel } from '../models/view/DeleteUserProductRequestViewModel';
 import { EditProductRequestViewModel } from '../models/view/EditProductRequestViewModel';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
 import { badRequestError } from '../services/generalErrorService';
