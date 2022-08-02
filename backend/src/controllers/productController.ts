@@ -45,7 +45,8 @@ export const productController = {
   async delistProduct(req: Request, res: Response, next: NextFunction) {
     const { productId } = req.params;
 
-    if (!productId) return next(badRequestError('productId is missing!'));
+    if (isNaN(+productId))
+      return next(badRequestError('productId is missing!'));
 
     const token = jwtService.getTokenFromRequest(req);
     const { userId } = jwtService.getTokenPayload(token);
