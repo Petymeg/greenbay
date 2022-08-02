@@ -139,3 +139,65 @@ describe('productController.addUserProduct()', () => {
     expect(result.statusCode).toEqual(201);
   });
 });
+
+describe('productController.delistProduct()', () => {
+  const token = 'asdkfahdlfkas';
+  const tokenData = {
+    userId: 20,
+  };
+
+  beforeEach(() => {
+    jwtService.getTokenFromRequest = jest.fn().mockReturnValue(token);
+    jwtService.verifyToken = jest.fn().mockReturnValue(true);
+    jwtService.getTokenPayload = jest.fn().mockReturnValue(tokenData);
+    console.error = jest.fn();
+  });
+
+  it('Error code 400 when no poductId is not a number', async () => {
+    //Arrange
+    //Act
+    const result = await request(app).delete('/api/product/notanid').send();
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 500 when service fails', async () => {
+    //Arrange
+    const productId = 12;
+    productService.delistProduct = jest.fn().mockRejectedValue('error');
+
+    //Act
+    const result = await request(app)
+      .delete(`/api/product/${productId}`)
+      .send();
+
+    //Assert
+    expect(productService.delistProduct).toHaveBeenCalledWith(
+      productId,
+      tokenData.userId
+    );
+    expect(productService.delistProduct).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(500);
+  });
+
+  it('Proper object is sent when product addition is successful', async () => {
+    //Arrange
+    const productId = 12;
+    productService.delistProduct = jest.fn().mockResolvedValue('Success');
+
+    //Act
+    const result = await request(app)
+      .delete(`/api/product/${productId}`)
+      .send();
+
+    //Assert
+    expect(productService.delistProduct).toHaveBeenCalledWith(
+      productId,
+      tokenData.userId
+    );
+    expect(productService.delistProduct).toHaveBeenCalledTimes(1);
+    expect(result.text).toEqual('Success');
+    expect(result.statusCode).toEqual(200);
+  });
+});
