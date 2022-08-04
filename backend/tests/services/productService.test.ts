@@ -209,3 +209,66 @@ describe('productService.setStatus', () => {
     expect(result).toEqual({ statusCode: statusDetails.statusCode });
   });
 });
+
+describe('productService.getSellableProducts', () => {
+  it('Gives proper object', async () => {
+    //Arrange
+    const productDBData = [
+      {
+        id: 1,
+        name: 'One great thing',
+        description: 'This is the best!',
+        imgUrl: 'http://allthepics.com/beauty1.png',
+        price: 200,
+        status: 1,
+        userId: 12,
+        userName: 'John',
+      },
+      {
+        id: 2,
+        name: 'Two great things',
+        description: 'This is the second best!',
+        imgUrl: 'http://allthepics.com/beauty2.png',
+        price: 200,
+        status: 1,
+        userId: 13,
+        userName: 'Smith',
+      },
+    ];
+    const sellableItems = [
+      {
+        id: 1,
+        name: 'One great thing',
+        description: 'This is the best!',
+        imgUrl: 'http://allthepics.com/beauty1.png',
+        price: 200,
+        owner: {
+          id: 12,
+          name: 'John',
+        },
+      },
+      {
+        id: 2,
+        name: 'Two great things',
+        description: 'This is the second best!',
+        imgUrl: 'http://allthepics.com/beauty2.png',
+        price: 200,
+        owner: {
+          id: 13,
+          name: 'Smith',
+        },
+      },
+    ];
+    productRepository.getSellableProducts = jest
+      .fn()
+      .mockResolvedValue(productDBData);
+
+    //Act
+    const result = await productService.getSellableProducts();
+
+    //Assert
+    expect(productRepository.getSellableProducts).toHaveBeenCalledTimes(1);
+    expect(productRepository.getSellableProducts).toHaveBeenCalledWith();
+    expect(result).toEqual(sellableItems);
+  });
+});
