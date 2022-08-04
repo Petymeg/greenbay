@@ -1,4 +1,5 @@
 import { UserDomainModel } from '../models/domain/UserDomainModel';
+import { RoleTypes } from '../models/enums/RoleType';
 import { UserLoginViewModel } from '../models/view/UserLoginViewModel';
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { userRepository } from '../repositories/user.repository';
@@ -23,7 +24,11 @@ export const userService = {
 
     const userId = await userRepository.register(username, hashedPassword);
 
-    const token = jwtService.generateAccessToken(userId, username, 2);
+    const token = jwtService.generateAccessToken(
+      userId,
+      username,
+      RoleTypes.User
+    );
 
     return {
       token,
