@@ -200,22 +200,6 @@ describe('productController.setStatus()', () => {
     expect(result.statusCode).toEqual(400);
   });
 
-  it('Error code 403 when trying to set statusCode to "sold"', async () => {
-    //Arrange
-    const statusData = {
-      productId: 12,
-      statusCode: ProductStatusTypes.Sold,
-    };
-
-    //Act
-    const result = await request(app)
-      .put('/api/product/setstatus')
-      .send(statusData);
-
-    //Assert
-    expect(result.statusCode).toEqual(403);
-  });
-
   it('Error code 500 when service fails', async () => {
     //Arrange
     const statusData = {
