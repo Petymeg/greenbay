@@ -5,9 +5,9 @@ import config from '../config';
 const swaggerOptions: SwaggerOptions = {
   swaggerDefinition: {
     info: {
-      title: 'Tribes API',
+      title: 'Greenbay API',
       version: '1.0.0',
-      description: 'Tribes game endpoints',
+      description: 'Greenbay endpoints',
     },
     servers: [`${config.servers.host}:${config.servers.port}`],
   },
