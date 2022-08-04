@@ -3,6 +3,7 @@ import { userRepository } from '../../src/repositories/user.repository';
 import {
   conflictError,
   forbiddenError,
+  notFoundError,
 } from '../../src/services/generalErrorService';
 import { jwtService } from '../../src/services/JwtService';
 import { passwordService } from '../../src/services/passwordService';
@@ -146,5 +147,44 @@ describe('userservice.login', () => {
       userData.roleId
     );
     expect(result).toEqual({ token, username });
+  });
+});
+
+describe('userService.getUserById', () => {
+  it('Gives error if user is not found', async () => {
+    //Arrange
+    const userId = 12;
+    userRepository.getUserById = jest.fn().mockResolvedValue(undefined);
+
+    try {
+      //Act
+      await userService.getUserById(userId);
+    } catch (err) {
+      //Assert
+      expect(userRepository.getUserById).toHaveBeenCalledTimes(1);
+      expect(userRepository.getUserById).toHaveBeenCalledWith(userId);
+      expect(err).toEqual(notFoundError('userId not found.'));
+    }
+  });
+
+  it('Gives proper object', async () => {
+    //Arrange
+    const userId = 12;
+    const userDBData = {
+      id: 12,
+      name: 'Tomi',
+      password: 'anc3834ztvomo4v',
+      roleId: 2,
+      money: 10000,
+    };
+    userRepository.getUserById = jest.fn().mockResolvedValue(userDBData);
+
+    //Act
+    const result = await userService.getUserById(userId);
+
+    //Assert
+    expect(userRepository.getUserById).toHaveBeenCalledTimes(1);
+    expect(userRepository.getUserById).toHaveBeenCalledWith(userId);
+    expect(result).toEqual(userDBData);
   });
 });
