@@ -201,3 +201,70 @@ describe('productController.delistProduct()', () => {
     expect(result.statusCode).toEqual(200);
   });
 });
+
+describe('productController.getSellableProducts()', () => {
+  const token = 'asdkfahdlfkas';
+  const tokenData = {
+    userId: 20,
+  };
+
+  beforeEach(() => {
+    jwtService.getTokenFromRequest = jest.fn().mockReturnValue(token);
+    jwtService.verifyToken = jest.fn().mockReturnValue(true);
+    jwtService.getTokenPayload = jest.fn().mockReturnValue(tokenData);
+    console.error = jest.fn();
+  });
+
+  it('Error code 500 when service fails', async () => {
+    //Arrange
+    productService.getSellableProducts = jest.fn().mockRejectedValue('error');
+
+    //Act
+    const result = await request(app).get(`/api/product`).send();
+
+    //Assert
+    expect(productService.getSellableProducts).toHaveBeenCalledWith();
+    expect(productService.getSellableProducts).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(500);
+  });
+
+  it('Proper object is sent', async () => {
+    //Arrange
+    const productList = [
+      {
+        id: 9,
+        name: 'Something Awesome',
+        description: 'This is the best!',
+        imgUrl: 'http://valami.hu/szepkep.jpg',
+        price: 300,
+        owner: {
+          id: 16,
+          name: 'Tomi',
+        },
+      },
+      {
+        id: 10,
+        name: 'Something Awesome',
+        description: 'This is the best!',
+        imgUrl: 'http://valami.hu/szepkep.jpg',
+        price: 300,
+        owner: {
+          id: 16,
+          name: 'Tomi',
+        },
+      },
+    ];
+    productService.getSellableProducts = jest
+      .fn()
+      .mockResolvedValue(productList);
+
+    //Act
+    const result = await request(app).get(`/api/product`).send();
+
+    //Assert
+    expect(productService.getSellableProducts).toHaveBeenCalledWith();
+    expect(productService.getSellableProducts).toHaveBeenCalledTimes(1);
+    expect(result.body).toEqual(productList);
+    expect(result.statusCode).toEqual(200);
+  });
+});
