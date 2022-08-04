@@ -18,7 +18,9 @@ export const productService = {
   async addUserProduct(
     productDetails: AddUserProductRequestModel
   ): Promise<number> {
-    await userService.getUserById(productDetails.userId);
+    if (!(await userService.checkIfUserIdExists(productDetails.userId))) {
+      throw forbiddenError('Cannot add product, userId not found in db!');
+    }
 
     return await productRepository.addUserProduct(productDetails);
   },
@@ -100,7 +102,10 @@ export const productService = {
     if (productData.price > buyerData.money)
       throw forbiddenError('Cannot buy item, not enough money');
 
-    const sellerData = await userService.getUserById(productData.userId);
+    if (!(await userService.checkIfUserIdExists(productData.userId)))
+      throw notFoundError(
+        "Purchase not possible, seller account doesn't exist!"
+      );
 
     await productRepository.setStatusById(productData.status, productId);
     await userRepository.deductProductPrice(userId, productData.price);
@@ -122,7 +127,10 @@ export const productService = {
     const { productId, name, description, imgUrl, price, userId } =
       productDetails;
     const productDBData = await this.getProductDBData(productId);
-    const userDBData = userService.getUserById(userId);
+
+    if (!(await userService.checkIfUserIdExists(userId))) {
+      throw notFoundError('Cannot edit product, userId not found in db!');
+    }
 
     if (productDBData.userId !== userId)
       throw forbiddenError(
