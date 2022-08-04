@@ -61,13 +61,6 @@ export const productController = {
     if (!(statusCode in ProductStatusTypes))
       return next(badRequestError('Invalid statusCode!'));
 
-    if (statusCode === ProductStatusTypes.Sold)
-      return next(
-        forbiddenError(
-          'You cannot set an item to "sold" without actually selling it'
-        )
-      );
-
     const token = jwtService.getTokenFromRequest(req);
     const { userId } = jwtService.getTokenPayload(token);
 
