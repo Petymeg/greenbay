@@ -46,7 +46,7 @@ export const productController = {
     const { productId } = req.params;
 
     if (isNaN(+productId))
-      return next(badRequestError('productId is missing!'));
+      return next(badRequestError('productId needs to be a number!'));
 
     const token = jwtService.getTokenFromRequest(req);
     const { userId } = jwtService.getTokenPayload(token);
@@ -80,7 +80,8 @@ export const productController = {
   ) {
     const { productId } = req.params;
 
-    if (!productId) return next(badRequestError('productId is missing!'));
+    if (isNaN(+productId))
+      return next(badRequestError('productId needs to be a number!'));
 
     try {
       const result = await productService.getProductById(+productId);
