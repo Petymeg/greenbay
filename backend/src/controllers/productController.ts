@@ -136,7 +136,7 @@ export const productController = {
     const { userId } = jwtService.getTokenPayload(token);
 
     const requestData = {
-      productId,
+      productId: +productId,
       name,
       description,
       imgUrl,
