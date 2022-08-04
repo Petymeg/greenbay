@@ -2,6 +2,7 @@ import app from '../../src/app';
 import request from 'supertest';
 import { jwtService } from '../../src/services/JwtService';
 import { productService } from '../../src/services/productService';
+import { ProductStatusTypes } from '../../src/models/enums/ProductStatusTypes';
 
 describe('productController.addUserProduct()', () => {
   const token = 'asdkfahdlfkas';
@@ -140,7 +141,7 @@ describe('productController.addUserProduct()', () => {
   });
 });
 
-describe('productController.delistProduct()', () => {
+describe('productController.setStatus()', () => {
   const token = 'asdkfahdlfkas';
   const tokenData = {
     userId: 20,
@@ -153,51 +154,114 @@ describe('productController.delistProduct()', () => {
     console.error = jest.fn();
   });
 
-  it('Error code 400 when no poductId is not a number', async () => {
+  it('Error code 400 when productId is not provided', async () => {
     //Arrange
+    const statusData = {
+      statusCode: 0,
+    };
+
     //Act
-    const result = await request(app).delete('/api/product/notanid').send();
+    const result = await request(app)
+      .put('/api/product/setstatus')
+      .send(statusData);
 
     //Assert
     expect(result.statusCode).toEqual(400);
   });
 
-  it('Error code 500 when service fails', async () => {
+  it('Error code 400 when statusCode is not provided', async () => {
     //Arrange
-    const productId = 12;
-    productService.delistProduct = jest.fn().mockRejectedValue('error');
+    const statusData = {
+      productId: 12,
+    };
 
     //Act
     const result = await request(app)
-      .delete(`/api/product/${productId}`)
-      .send();
+      .put('/api/product/setstatus')
+      .send(statusData);
 
     //Assert
-    expect(productService.delistProduct).toHaveBeenCalledWith(
-      productId,
-      tokenData.userId
-    );
-    expect(productService.delistProduct).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 400 when statusCode is not valid', async () => {
+    //Arrange
+    const statusData = {
+      productId: 12,
+      statusCode: 82345692834756,
+    };
+
+    //Act
+    const result = await request(app)
+      .put('/api/product/setstatus')
+      .send(statusData);
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 403 when trying to set statusCode to "sold"', async () => {
+    //Arrange
+    const statusData = {
+      productId: 12,
+      statusCode: ProductStatusTypes.Sold,
+    };
+
+    //Act
+    const result = await request(app)
+      .put('/api/product/setstatus')
+      .send(statusData);
+
+    //Assert
+    expect(result.statusCode).toEqual(403);
+  });
+
+  it('Error code 500 when service fails', async () => {
+    //Arrange
+    const statusData = {
+      productId: 12,
+      statusCode: 0,
+    };
+    const statusDetails = {
+      productId: 12,
+      statusCode: 0,
+      userId: tokenData.userId,
+    };
+    productService.setStatus = jest.fn().mockRejectedValue('error');
+
+    //Act
+    const result = await request(app)
+      .put(`/api/product/setstatus`)
+      .send(statusData);
+
+    //Assert
+    expect(productService.setStatus).toHaveBeenCalledWith(statusDetails);
+    expect(productService.setStatus).toHaveBeenCalledTimes(1);
     expect(result.statusCode).toEqual(500);
   });
 
   it('Proper object is sent when product addition is successful', async () => {
     //Arrange
-    const productId = 12;
-    productService.delistProduct = jest.fn().mockResolvedValue('Success');
+    const statusData = {
+      productId: 12,
+      statusCode: 0,
+    };
+    const statusDetails = {
+      productId: 12,
+      statusCode: 0,
+      userId: tokenData.userId,
+    };
+    productService.setStatus = jest.fn().mockResolvedValue('Success');
 
     //Act
     const result = await request(app)
-      .delete(`/api/product/${productId}`)
-      .send();
+      .put(`/api/product/setstatus`)
+      .send(statusData);
 
     //Assert
-    expect(productService.delistProduct).toHaveBeenCalledWith(
-      productId,
-      tokenData.userId
-    );
-    expect(productService.delistProduct).toHaveBeenCalledTimes(1);
-    expect(result.text).toEqual('Success');
+    expect(productService.setStatus).toHaveBeenCalledWith(statusDetails);
+    expect(productService.setStatus).toHaveBeenCalledTimes(1);
+    expect(result.body).toEqual({ statusCode: statusDetails.statusCode });
     expect(result.statusCode).toEqual(200);
   });
 });
