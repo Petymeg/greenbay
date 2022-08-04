@@ -37,13 +37,11 @@ export const userService = {
   },
 
   async checkIfUsernameExists(username: string): Promise<boolean> {
-    const userData = await userRepository.getUserByName(username);
-    return userData ? true : false;
+    return !!(await userRepository.getUserByName(username));
   },
 
   async checkIfUserIdExists(userId: number): Promise<boolean> {
-    const userData = await userRepository.getUserById(userId);
-    return userData ? true : false;
+    return !!(await userRepository.getUserById(userId));
   },
 
   async login(username: string, password: string): Promise<UserLoginViewModel> {
