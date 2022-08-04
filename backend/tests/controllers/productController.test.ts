@@ -331,3 +331,64 @@ describe('productController.getProduct()', () => {
     expect(result.statusCode).toEqual(200);
   });
 });
+
+describe('productController.getProduct()', () => {
+  const token = 'asdkfahdlfkas';
+  const tokenData = {
+    userId: 20,
+  };
+
+  beforeEach(() => {
+    jwtService.getTokenFromRequest = jest.fn().mockReturnValue(token);
+    jwtService.verifyToken = jest.fn().mockReturnValue(true);
+    jwtService.getTokenPayload = jest.fn().mockReturnValue(tokenData);
+    console.error = jest.fn();
+  });
+
+  it('Error code 400 when no productId is provided', async () => {
+    //Arrange
+    //Act
+    const result = await request(app).post(`/api/product/buy`).send({});
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 500 when service fails', async () => {
+    //Arrange
+    const productId = 12;
+    productService.buyProduct = jest.fn().mockRejectedValue('error');
+
+    //Act
+    const result = await request(app)
+      .post(`/api/product/buy`)
+      .send({ productId });
+
+    //Assert
+    expect(productService.buyProduct).toHaveBeenCalledWith(
+      productId,
+      tokenData.userId
+    );
+    expect(productService.buyProduct).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(500);
+  });
+
+  it('Status 200 when pruchase is successful', async () => {
+    //Arrange
+    const productId = 12;
+    productService.buyProduct = jest.fn();
+
+    //Act
+    const result = await request(app)
+      .post(`/api/product/buy`)
+      .send({ productId });
+
+    //Assert
+    expect(productService.buyProduct).toHaveBeenCalledWith(
+      productId,
+      tokenData.userId
+    );
+    expect(productService.buyProduct).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(200);
+  });
+});
