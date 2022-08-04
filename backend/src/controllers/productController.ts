@@ -121,6 +121,9 @@ export const productController = {
     const { name, description, imgUrl, price } = req.body;
     const { productId } = req.params;
 
+    if (isNaN(+productId))
+      return next(badRequestError('productId needs to be a number!'));
+
     if (!name || !description || !imgUrl || !price) {
       return next(
         badRequestError(
