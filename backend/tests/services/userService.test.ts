@@ -1,6 +1,9 @@
 import { RoleTypes } from '../../src/models/enums/RoleType';
 import { userRepository } from '../../src/repositories/user.repository';
-import { conflictError } from '../../src/services/generalErrorService';
+import {
+  conflictError,
+  forbiddenError,
+} from '../../src/services/generalErrorService';
 import { jwtService } from '../../src/services/JwtService';
 import { passwordService } from '../../src/services/passwordService';
 import { userService } from '../../src/services/userService';
@@ -56,6 +59,91 @@ describe('userService.register', () => {
       12,
       username,
       RoleTypes.User
+    );
+    expect(result).toEqual({ token, username });
+  });
+});
+
+describe('userservice.login', () => {
+  it("Gives error when user doesn't exist", async () => {
+    //Arrange
+    const username = 'Tomi';
+    const password = 'VerySecretPassword';
+    userRepository.getUserByName = jest.fn().mockResolvedValue(undefined);
+    passwordService.comparePasswords = jest.fn();
+    jwtService.generateAccessToken = jest.fn();
+
+    try {
+      //Act
+      await userService.login(username, password);
+    } catch (err) {
+      //Assert
+      expect(userRepository.getUserByName).toHaveBeenCalledTimes(1);
+      expect(userRepository.getUserByName).toHaveBeenCalledWith(username);
+      expect(passwordService.comparePasswords).toHaveBeenCalledTimes(0);
+      expect(jwtService.generateAccessToken).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(forbiddenError('Username or password is incorrect!'));
+    }
+  });
+
+  it("Gives error when passwords don't match", async () => {
+    //Arrange
+    const username = 'Tomi';
+    const password = 'VerySecretPassword';
+    const userData = {
+      password: 'anc3834ztvomo4v',
+    };
+    userRepository.getUserByName = jest.fn().mockResolvedValue(userData);
+    passwordService.comparePasswords = jest.fn().mockReturnValue(false);
+    jwtService.generateAccessToken = jest.fn();
+
+    try {
+      //Act
+      await userService.login(username, password);
+    } catch (err) {
+      //Assert
+      expect(userRepository.getUserByName).toHaveBeenCalledTimes(1);
+      expect(userRepository.getUserByName).toHaveBeenCalledWith(username);
+      expect(passwordService.comparePasswords).toHaveBeenCalledTimes(1);
+      expect(passwordService.comparePasswords).toHaveBeenCalledWith(
+        password,
+        userData.password
+      );
+      expect(jwtService.generateAccessToken).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(forbiddenError('Username or password is incorrect!'));
+    }
+  });
+
+  it('Gives proper object', async () => {
+    //Arrange
+    const username = 'Tomi';
+    const password = 'VerySecretPassword';
+    const userData = {
+      id: 12,
+      password: 'anc3834ztvomo4v',
+      roleId: 2,
+    };
+    const token = 'öpw9843nczia8vzoia';
+    userRepository.getUserByName = jest.fn().mockResolvedValue(userData);
+    passwordService.comparePasswords = jest.fn().mockReturnValue(true);
+    jwtService.generateAccessToken = jest.fn().mockReturnValue(token);
+
+    //Act
+    const result = await userService.login(username, password);
+
+    //Assert
+    expect(userRepository.getUserByName).toHaveBeenCalledTimes(1);
+    expect(userRepository.getUserByName).toHaveBeenCalledWith(username);
+    expect(passwordService.comparePasswords).toHaveBeenCalledTimes(1);
+    expect(passwordService.comparePasswords).toHaveBeenCalledWith(
+      password,
+      userData.password
+    );
+    expect(jwtService.generateAccessToken).toHaveBeenCalledTimes(1);
+    expect(jwtService.generateAccessToken).toHaveBeenCalledWith(
+      userData.id,
+      username,
+      userData.roleId
     );
     expect(result).toEqual({ token, username });
   });
