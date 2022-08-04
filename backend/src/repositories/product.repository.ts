@@ -43,7 +43,7 @@ export const productRepository = {
     return productDetails[0];
   },
 
-  async delistProductById(productId: number): Promise<void> {
+  async setStatusById(productId: number, statusCode: number): Promise<void> {
     const query = `UPDATE
                       userProducts
                     SET                      
@@ -51,7 +51,7 @@ export const productRepository = {
                     WHERE
                       id = ?;`;
 
-    await db.query(query, [`${ProductStatusTypes.Inactive}`, `${productId}`]);
+    await db.query(query, [`${statusCode}`, `${productId}`]);
   },
 
   async setProductToSoldById(productId: number): Promise<void> {

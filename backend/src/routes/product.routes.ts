@@ -152,41 +152,6 @@ productRouter.get('/:productId', productController.getProduct);
 
 /**
  * @swagger
- * /api/product/{productId}:
- *  delete:
- *      tags:
- *      - PRODUCT
- *      description: Delist a product
- *      parameters:
- *          - in: header
- *            name: authorization
- *            schema:
- *              type: string
- *              example: Bearer rh4b5b435njfd
- *          - in: path
- *            name: productId
- *            description: Product ID to be deleted
- *            schema:
- *              type: number
- *              example: 1
- *      responses:
- *          200:
- *              description: Listing deleted
- *          400:
- *              description: productId missing from request body
- *          401:
- *              description: Unauthorized
- *          403:
- *              description: Forbidden - Product doesn't belong to logged in user
- *          404:
- *              description: Product not found
- *          500:
- *              description: Internal server error
- */
-productRouter.delete('/:productId', productController.delistProduct);
-
-/**
- * @swagger
  * /api/product/buy:
  *  post:
  *      tags:
@@ -222,5 +187,46 @@ productRouter.delete('/:productId', productController.delistProduct);
  *              description: Internal server error
  */
 productRouter.post('/buy', productController.buyProduct);
+
+/**
+ * @swagger
+ * /api/product/setstatus:
+ *  put:
+ *      tags:
+ *      - PRODUCT
+ *      description: Activate (1) or deactivate (0) a product
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *          - in: body
+ *            name: statusData
+ *            description: Provide the id and status
+ *            schema:
+ *              type: object
+ *              properties:
+ *                productId:
+ *                  type: number
+ *                  example: 12
+ *                statusCode:
+ *                  type: number
+ *                  example: 0
+ *      responses:
+ *          200:
+ *              description: Status updated
+ *          400:
+ *              description: productId or statusCode is missing from request body
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: Forbidden
+ *          404:
+ *              description: Product not found
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.put('/setstatus', productController.setStatus);
 
 export default productRouter;

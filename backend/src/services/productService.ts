@@ -1,5 +1,7 @@
 import { AddUserProductRequestModel } from '../models/common/AddUserProductRequestModel';
 import { EditProductRequestModel } from '../models/common/EditProductRequestModel';
+import { ProductStatusRequestModel } from '../models/common/ProductStatusRequestModel';
+import { ProductStatusViewModel } from '../models/common/ProductStatusViewModel';
 import { UserProductDomainModel } from '../models/domain/UserProductDomainModel';
 import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
@@ -21,20 +23,27 @@ export const productService = {
     return await productRepository.addUserProduct(productDetails);
   },
 
-  async delistProduct(productId: number, userId: number): Promise<string> {
-    const productData = await this.getProductDBData(productId);
+  async setStatus(
+    statusDetails: ProductStatusRequestModel
+  ): Promise<ProductStatusViewModel> {
+    const productData = await this.getProductDBData(statusDetails.productId);
 
-    if (userId !== productData.userId)
+    if (statusDetails.userId !== productData.userId)
       throw unauthorizedError(
-        "You can't delist this product, it doesn't belong to you!"
+        "You cannot change the status of this product, it doesn't belong to you!"
       );
 
-    if (productData.status !== ProductStatusTypes.Active)
-      throw forbiddenError('Product is not sellable, cannot be delisted');
+    if (productData.status === ProductStatusTypes.Sold)
+      throw forbiddenError('You cannot change the status of a sold item!');
 
-    await productRepository.delistProductById(productId);
+    if (statusDetails.statusCode !== productData.status) {
+      await productRepository.setStatusById(
+        statusDetails.productId,
+        statusDetails.statusCode
+      );
+    }
 
-    return `Listing for "${productId} - ${productData.name}" deleted`;
+    return { statusCode: statusDetails.statusCode };
   },
 
   async getSellableProducts(): Promise<ProductWithOwnerViewModel[]> {

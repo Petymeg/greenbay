@@ -1,10 +1,16 @@
 import { NextFunction, Request, Response } from 'express';
+import { ProductStatusViewModel } from '../models/common/ProductStatusViewModel';
+import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 import { AddUserProductRequestViewModel } from '../models/view/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from '../models/view/AddUserProductViewModel';
 import { BuyProductRequestViewModel } from '../models/view/BuyProductRequestViewModel';
 import { EditProductRequestViewModel } from '../models/view/EditProductRequestViewModel';
+import { ProductStatusRequestViewModel } from '../models/view/ProductStatusRequestViewModel';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
-import { badRequestError } from '../services/generalErrorService';
+import {
+  badRequestError,
+  forbiddenError,
+} from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
 import { productService } from '../services/productService';
 
@@ -42,18 +48,38 @@ export const productController = {
       next(err);
     }
   },
-  async delistProduct(req: Request, res: Response, next: NextFunction) {
-    const { productId } = req.params;
+  async setStatus(
+    req: Request<ProductStatusRequestViewModel>,
+    res: Response<ProductStatusViewModel>,
+    next: NextFunction
+  ) {
+    const { productId, statusCode } = req.body;
 
-    if (isNaN(+productId))
-      return next(badRequestError('productId needs to be a number!'));
+    if (!productId || statusCode === undefined)
+      return next(badRequestError('productId and statusCode are mandatory!'));
+
+    if (!(statusCode in ProductStatusTypes))
+      return next(badRequestError('Invalid statusCode!'));
+
+    if (statusCode === ProductStatusTypes.Sold)
+      return next(
+        forbiddenError(
+          'You cannot set an item to "sold" without actually selling it'
+        )
+      );
 
     const token = jwtService.getTokenFromRequest(req);
     const { userId } = jwtService.getTokenPayload(token);
 
+    const statusDetails = {
+      userId,
+      productId,
+      statusCode,
+    };
+
     try {
-      const result = await productService.delistProduct(+productId, userId);
-      res.status(200).send(result);
+      const result = await productService.setStatus(statusDetails);
+      res.status(200).send({ statusCode });
     } catch (err) {
       next(err);
     }
