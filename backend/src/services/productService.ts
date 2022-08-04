@@ -28,6 +28,11 @@ export const productService = {
   async setStatus(
     statusDetails: ProductStatusRequestModel
   ): Promise<ProductStatusViewModel> {
+    if (statusDetails.statusCode === ProductStatusTypes.Sold)
+      throw forbiddenError(
+        'You cannot set an item to "sold" without actually selling it'
+      );
+
     const productData = await this.getProductDBData(statusDetails.productId);
 
     if (statusDetails.userId !== productData.userId)
@@ -37,11 +42,6 @@ export const productService = {
 
     if (productData.status === ProductStatusTypes.Sold)
       throw forbiddenError('You cannot change the status of a sold item!');
-
-    if (statusDetails.statusCode === ProductStatusTypes.Sold)
-      throw forbiddenError(
-        'You cannot set an item to "sold" without actually selling it'
-      );
 
     if (statusDetails.statusCode !== productData.status) {
       await productRepository.setStatusById(
