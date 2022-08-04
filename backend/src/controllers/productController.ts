@@ -118,16 +118,12 @@ export const productController = {
     res: Response,
     next: NextFunction
   ) {
-    const { name, description, imgUrl, price } = req.body;
-    const { productId } = req.params;
+    const { productId, name, description, imgUrl, price } = req.body;
 
-    if (isNaN(+productId))
-      return next(badRequestError('productId needs to be a number!'));
-
-    if (!name || !description || !imgUrl || !price) {
+    if (!productId || !name || !description || !imgUrl || !price) {
       return next(
         badRequestError(
-          'Name, description, imgUrl and price are all mandatory. The price cannot be 0.'
+          'ProductId, name, description, imgUrl and price are all mandatory. The price cannot be 0.'
         )
       );
     }
@@ -136,7 +132,7 @@ export const productController = {
     const { userId } = jwtService.getTokenPayload(token);
 
     const requestData = {
-      productId: +productId,
+      productId,
       name,
       description,
       imgUrl,

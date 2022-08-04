@@ -6,6 +6,27 @@ const productRouter = express.Router();
 /**
  * @swagger
  * /api/product:
+ *  get:
+ *      tags:
+ *      - PRODUCT
+ *      description: Get all sellable products
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *      responses:
+ *          200:
+ *              description: Data provided
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.get('', productController.getSellableProducts);
+
+/**
+ * @swagger
+ * /api/product:
  *  post:
  *      tags:
  *      - PRODUCT
@@ -45,6 +66,56 @@ const productRouter = express.Router();
  *              description: Internal server error
  */
 productRouter.post('', productController.addUserProduct);
+
+/**
+ * @swagger
+ * /api/product:
+ *  put:
+ *      tags:
+ *      - PRODUCT
+ *      description: Edit a products details
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *          - in: body
+ *            name: productData
+ *            description: Provide the details of the product you'd like to edit
+ *            schema:
+ *              type: object
+ *              properties:
+ *                productId:
+ *                  type: number
+ *                  example: 1
+ *                name:
+ *                  type: string
+ *                  example: Something great
+ *                description:
+ *                  type: string
+ *                  example: A great new description
+ *                imgUrl:
+ *                  type: string
+ *                  example: https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg
+ *                price:
+ *                  type: number
+ *                  example: 123
+ *      responses:
+ *          200:
+ *              description: Listing edited
+ *          400:
+ *              description: Bad request
+ *          401:
+ *              description: Unauthorized
+ *          403:
+ *              description: Forbidden
+ *          404:
+ *              description: Not found
+ *          500:
+ *              description: Internal server error
+ */
+productRouter.put('', productController.editProduct);
 
 /**
  * @swagger
@@ -116,27 +187,6 @@ productRouter.delete('/:productId', productController.delistProduct);
 
 /**
  * @swagger
- * /api/product:
- *  get:
- *      tags:
- *      - PRODUCT
- *      description: Get all sellable products
- *      parameters:
- *          - in: header
- *            name: authorization
- *            schema:
- *              type: string
- *              example: Bearer rh4b5b435njfd
- *      responses:
- *          200:
- *              description: Data provided
- *          500:
- *              description: Internal server error
- */
-productRouter.get('', productController.getSellableProducts);
-
-/**
- * @swagger
  * /api/product/buy:
  *  post:
  *      tags:
@@ -172,58 +222,5 @@ productRouter.get('', productController.getSellableProducts);
  *              description: Internal server error
  */
 productRouter.post('/buy', productController.buyProduct);
-
-/**
- * @swagger
- * /api/product/{productId}:
- *  put:
- *      tags:
- *      - PRODUCT
- *      description: Edit a products details
- *      parameters:
- *          - in: header
- *            name: authorization
- *            schema:
- *              type: string
- *              example: Bearer rh4b5b435njfd
- *          - in: path
- *            name: productId
- *            description: ID of product to be edited
- *            schema:
- *              type: number
- *              example: 1
- *          - in: body
- *            name: productId
- *            description: Provide the details of the product you'd like to edit
- *            schema:
- *              type: object
- *              properties:
- *                name:
- *                  type: string
- *                  example: Something great
- *                description:
- *                  type: string
- *                  example: A great new description
- *                imgUrl:
- *                  type: string
- *                  example: https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg
- *                price:
- *                  type: number
- *                  example: 123
- *      responses:
- *          200:
- *              description: Listing edited
- *          400:
- *              description: Bad request
- *          401:
- *              description: Unauthorized
- *          403:
- *              description: Forbidden
- *          404:
- *              description: Not found
- *          500:
- *              description: Internal server error
- */
-productRouter.put('/:productId', productController.editProduct);
 
 export default productRouter;

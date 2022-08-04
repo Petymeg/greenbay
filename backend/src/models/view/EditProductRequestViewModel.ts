@@ -1,5 +1,5 @@
 export interface EditProductRequestViewModel {
-  productId: string;
+  productId: number;
   name: string;
   description: string;
   imgUrl: string;

@@ -392,3 +392,153 @@ describe('productController.getProduct()', () => {
     expect(result.statusCode).toEqual(200);
   });
 });
+
+describe('productController.editProduct()', () => {
+  const token = 'asdkfahdlfkas';
+  const tokenData = {
+    userId: 20,
+  };
+
+  beforeEach(() => {
+    jwtService.getTokenFromRequest = jest.fn().mockReturnValue(token);
+    jwtService.verifyToken = jest.fn().mockReturnValue(true);
+    jwtService.getTokenPayload = jest.fn().mockReturnValue(tokenData);
+    console.error = jest.fn();
+  });
+
+  it('Error code 400 when product id is not provided', async () => {
+    //Arrange
+    const productData = {
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+    };
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 400 when name is not provided', async () => {
+    //Arrange
+    const productData = {
+      productId: 12,
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+    };
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 400 when description is not provided', async () => {
+    //Arrange
+    const productData = {
+      productId: 12,
+      name: 'Something Awesome',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+    };
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 400 when imgUrl is not provided', async () => {
+    //Arrange
+    const productData = {
+      productId: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      price: 300,
+    };
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 400 when price is not provided', async () => {
+    //Arrange
+    const productData = {
+      productId: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+    };
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 500 when service fails', async () => {
+    //Arrange
+    const productData = {
+      productId: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+    };
+    const productDetails = {
+      productId: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+      userId: tokenData.userId,
+    };
+    productService.editProduct = jest.fn().mockRejectedValue('error');
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(productService.editProduct).toHaveBeenCalledWith(productDetails);
+    expect(productService.editProduct).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(500);
+  });
+
+  it('Proper object is sent when product addition is successful', async () => {
+    //Arrange
+    const productData = {
+      productId: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+    };
+    const productDetails = {
+      productId: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+      userId: tokenData.userId,
+    };
+    productService.editProduct = jest.fn();
+
+    //Act
+    const result = await request(app).put(`/api/product`).send(productData);
+
+    //Assert
+    expect(productService.editProduct).toHaveBeenCalledWith(productDetails);
+    expect(productService.editProduct).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(200);
+  });
+});
