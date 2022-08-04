@@ -268,3 +268,66 @@ describe('productController.getSellableProducts()', () => {
     expect(result.statusCode).toEqual(200);
   });
 });
+
+describe('productController.getProduct()', () => {
+  const token = 'asdkfahdlfkas';
+  const tokenData = {
+    userId: 20,
+  };
+
+  beforeEach(() => {
+    jwtService.getTokenFromRequest = jest.fn().mockReturnValue(token);
+    jwtService.verifyToken = jest.fn().mockReturnValue(true);
+    jwtService.getTokenPayload = jest.fn().mockReturnValue(tokenData);
+    console.error = jest.fn();
+  });
+
+  it('Error code 400 when no poductId is not a number', async () => {
+    //Arrange
+    //Act
+    const result = await request(app).get('/api/product/notanid').send();
+
+    //Assert
+    expect(result.statusCode).toEqual(400);
+  });
+
+  it('Error code 500 when service fails', async () => {
+    //Arrange
+    const productId = 12;
+    productService.getProductById = jest.fn().mockRejectedValue('error');
+
+    //Act
+    const result = await request(app).get(`/api/product/${productId}`).send();
+
+    //Assert
+    expect(productService.getProductById).toHaveBeenCalledWith(productId);
+    expect(productService.getProductById).toHaveBeenCalledTimes(1);
+    expect(result.statusCode).toEqual(500);
+  });
+
+  it('Proper object is sent when product addition is successful', async () => {
+    //Arrange
+    const productId = 12;
+    const productDetails = {
+      id: 12,
+      name: 'Something Awesome',
+      description: 'This is the best!',
+      imgUrl: 'http://valami.hu/szepkep.jpg',
+      price: 300,
+      owner: {
+        id: 16,
+        name: 'Tomi',
+      },
+    };
+    productService.getProductById = jest.fn().mockResolvedValue(productDetails);
+
+    //Act
+    const result = await request(app).get(`/api/product/${productId}`).send();
+
+    //Assert
+    expect(productService.getProductById).toHaveBeenCalledWith(productId);
+    expect(productService.getProductById).toHaveBeenCalledTimes(1);
+    expect(result.body).toEqual(productDetails);
+    expect(result.statusCode).toEqual(200);
+  });
+});
