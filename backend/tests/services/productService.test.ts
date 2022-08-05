@@ -553,3 +553,47 @@ describe('productService.buyProduct', () => {
     );
   });
 });
+
+describe('productService.getProductDBData', () => {
+  it('Gives error if product is not found in DB', async () => {
+    //Arrange
+    const productId = 36;
+    productRepository.getProductById = jest.fn().mockResolvedValue(undefined);
+
+    try {
+      //Act
+      await productService.getProductDBData(productId);
+    } catch (err) {
+      //Assert
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
+      expect(err).toEqual(notFoundError('Product with this ID not found'));
+    }
+  });
+
+  it('Gives proper data', async () => {
+    //Arrange
+    const productId = 36;
+    const productDBData = {
+      id: 36,
+      name: 'One great thing',
+      description: 'This is the best!',
+      imgUrl: 'http://allthepics.com/beauty1.png',
+      price: 200,
+      status: 3,
+      userId: 12,
+      userName: 'John',
+    };
+    productRepository.getProductById = jest
+      .fn()
+      .mockResolvedValue(productDBData);
+
+    //Act
+    const result = await productService.getProductDBData(productId);
+
+    //Assert
+    expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+    expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
+    expect(result).toBe(productDBData);
+  });
+});
