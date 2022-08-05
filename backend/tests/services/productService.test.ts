@@ -478,7 +478,48 @@ describe('productService.buyProduct', () => {
     };
     productService.getProductDBData = jest.fn().mockResolvedValue(productData);
     userService.getUserById = jest.fn().mockResolvedValue(buyerData);
-    userService.checkIfUserIdExists = jest.fn().mockResolvedValue('Userdata');
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue(false);
+    productRepository.setStatusById = jest.fn();
+    userRepository.deductProductPrice = jest.fn();
+    userRepository.addSoldProductPrice = jest.fn();
+
+    try {
+      //Act
+      await productService.buyProduct(productId, userId);
+    } catch (err) {
+      //Assert
+      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
+      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(userService.getUserById).toHaveBeenCalledTimes(1);
+      expect(userService.getUserById).toHaveBeenCalledWith(userId);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledWith(
+        productData.userId
+      );
+      expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
+      expect(userRepository.deductProductPrice).toHaveBeenCalledTimes(0);
+      expect(userRepository.addSoldProductPrice).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(
+        notFoundError("Purchase not possible, seller account doesn't exist!")
+      );
+    }
+  });
+
+  it('Proper methods are called if all data checks are passed', async () => {
+    //Arrange
+    const productId = 36;
+    const userId = 13;
+    const productData = {
+      userId: 12,
+      status: 1,
+      price: 10,
+    };
+    const buyerData = {
+      money: 1000,
+    };
+    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    userService.getUserById = jest.fn().mockResolvedValue(buyerData);
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue(true);
     productRepository.setStatusById = jest.fn();
     userRepository.deductProductPrice = jest.fn();
     userRepository.addSoldProductPrice = jest.fn();
