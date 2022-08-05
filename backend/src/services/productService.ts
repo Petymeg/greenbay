@@ -131,11 +131,12 @@ export const productService = {
   async editProduct(productDetails: EditProductRequestModel): Promise<void> {
     const { productId, name, description, imgUrl, price, userId } =
       productDetails;
-    const productDBData = await this.getProductDBData(productId);
 
     if (!(await userService.checkIfUserIdExists(userId))) {
       throw notFoundError('Cannot edit product, userId not found in db!');
     }
+
+    const productDBData = await this.getProductDBData(productId);
 
     if (productDBData.userId !== userId)
       throw forbiddenError(
