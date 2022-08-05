@@ -75,7 +75,7 @@ describe('productService.setStatus', () => {
       productId: 36,
       statusCode: ProductStatusTypes.Sold,
     };
-    productService.getProductDBData = jest.fn();
+    productRepository.getProductById = jest.fn();
     productRepository.setStatusById = jest.fn();
 
     try {
@@ -83,7 +83,7 @@ describe('productService.setStatus', () => {
       await productService.setStatus(statusDetails);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(0);
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(0);
       expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
       expect(err).toEqual(
         forbiddenError(
@@ -103,7 +103,7 @@ describe('productService.setStatus', () => {
     const productData = {
       userId: 13,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     productRepository.setStatusById = jest.fn();
 
     try {
@@ -111,8 +111,8 @@ describe('productService.setStatus', () => {
       await productService.setStatus(statusDetails);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-      expect(productService.getProductDBData).toHaveBeenCalledWith(
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(
         statusDetails.productId
       );
       expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
@@ -135,7 +135,7 @@ describe('productService.setStatus', () => {
       userId: 12,
       status: ProductStatusTypes.Sold,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     productRepository.setStatusById = jest.fn();
 
     try {
@@ -143,8 +143,8 @@ describe('productService.setStatus', () => {
       await productService.setStatus(statusDetails);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-      expect(productService.getProductDBData).toHaveBeenCalledWith(
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(
         statusDetails.productId
       );
       expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
@@ -165,15 +165,15 @@ describe('productService.setStatus', () => {
       userId: 12,
       status: 0,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     productRepository.setStatusById = jest.fn();
 
     //Act
     const result = await productService.setStatus(statusDetails);
 
     //Assert
-    expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-    expect(productService.getProductDBData).toHaveBeenCalledWith(
+    expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+    expect(productRepository.getProductById).toHaveBeenCalledWith(
       statusDetails.productId
     );
     expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
@@ -191,15 +191,15 @@ describe('productService.setStatus', () => {
       userId: 12,
       status: 1,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     productRepository.setStatusById = jest.fn();
 
     //Act
     const result = await productService.setStatus(statusDetails);
 
     //Assert
-    expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-    expect(productService.getProductDBData).toHaveBeenCalledWith(
+    expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+    expect(productRepository.getProductById).toHaveBeenCalledWith(
       statusDetails.productId
     );
     expect(productRepository.setStatusById).toHaveBeenCalledTimes(1);
@@ -370,7 +370,7 @@ describe('productService.buyProduct', () => {
     const productData = {
       userId: 12,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     userService.getUserById = jest.fn();
     userService.checkIfUserIdExists = jest.fn();
     productRepository.setStatusById = jest.fn();
@@ -382,8 +382,8 @@ describe('productService.buyProduct', () => {
       await productService.buyProduct(productId, userId);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
       expect(userService.getUserById).toHaveBeenCalledTimes(1);
       expect(userService.getUserById).toHaveBeenCalledWith(userId);
       expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(0);
@@ -404,7 +404,7 @@ describe('productService.buyProduct', () => {
       userId: 12,
       status: 0,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     userService.getUserById = jest.fn();
     userService.checkIfUserIdExists = jest.fn();
     productRepository.setStatusById = jest.fn();
@@ -416,8 +416,8 @@ describe('productService.buyProduct', () => {
       await productService.buyProduct(productId, userId);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
       expect(userService.getUserById).toHaveBeenCalledTimes(1);
       expect(userService.getUserById).toHaveBeenCalledWith(userId);
       expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(0);
@@ -440,7 +440,7 @@ describe('productService.buyProduct', () => {
     const buyerData = {
       money: 0,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     userService.getUserById = jest.fn().mockResolvedValue(buyerData);
     userService.checkIfUserIdExists = jest.fn();
     productRepository.setStatusById = jest.fn();
@@ -452,8 +452,8 @@ describe('productService.buyProduct', () => {
       await productService.buyProduct(productId, userId);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
       expect(userService.getUserById).toHaveBeenCalledTimes(1);
       expect(userService.getUserById).toHaveBeenCalledWith(userId);
       expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(0);
@@ -476,7 +476,7 @@ describe('productService.buyProduct', () => {
     const buyerData = {
       money: 1000,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     userService.getUserById = jest.fn().mockResolvedValue(buyerData);
     userService.checkIfUserIdExists = jest.fn().mockResolvedValue(false);
     productRepository.setStatusById = jest.fn();
@@ -488,8 +488,8 @@ describe('productService.buyProduct', () => {
       await productService.buyProduct(productId, userId);
     } catch (err) {
       //Assert
-      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
       expect(userService.getUserById).toHaveBeenCalledTimes(1);
       expect(userService.getUserById).toHaveBeenCalledWith(userId);
       expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
@@ -517,7 +517,7 @@ describe('productService.buyProduct', () => {
     const buyerData = {
       money: 1000,
     };
-    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    productRepository.getProductById = jest.fn().mockResolvedValue(productData);
     userService.getUserById = jest.fn().mockResolvedValue(buyerData);
     userService.checkIfUserIdExists = jest.fn().mockResolvedValue(true);
     productRepository.setStatusById = jest.fn();
@@ -528,8 +528,8 @@ describe('productService.buyProduct', () => {
     await productService.buyProduct(productId, userId);
 
     //Assert
-    expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
-    expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+    expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+    expect(productRepository.getProductById).toHaveBeenCalledWith(productId);
     expect(userService.getUserById).toHaveBeenCalledTimes(1);
     expect(userService.getUserById).toHaveBeenCalledWith(userId);
     expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
