@@ -361,3 +361,154 @@ describe('productService.getProductById', () => {
     expect(result).toEqual(productDetails);
   });
 });
+
+describe('productService.buyProduct', () => {
+  it('Gives error if item belongs to buyer', async () => {
+    //Arrange
+    const productId = 36;
+    const userId = 12;
+    const productData = {
+      userId: 12,
+    };
+    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    userService.getUserById = jest.fn();
+    userService.checkIfUserIdExists = jest.fn();
+    productRepository.setStatusById = jest.fn();
+    userRepository.deductProductPrice = jest.fn();
+    userRepository.addSoldProductPrice = jest.fn();
+
+    try {
+      //Act
+      await productService.buyProduct(productId, userId);
+    } catch (err) {
+      //Assert
+      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
+      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(userService.getUserById).toHaveBeenCalledTimes(1);
+      expect(userService.getUserById).toHaveBeenCalledWith(userId);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(0);
+      expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
+      expect(userRepository.deductProductPrice).toHaveBeenCalledTimes(0);
+      expect(userRepository.addSoldProductPrice).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(
+        forbiddenError('Cannot buy item, it belongs to you!')
+      );
+    }
+  });
+
+  it('Gives error if item is not sellable', async () => {
+    //Arrange
+    const productId = 36;
+    const userId = 13;
+    const productData = {
+      userId: 12,
+      status: 0,
+    };
+    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    userService.getUserById = jest.fn();
+    userService.checkIfUserIdExists = jest.fn();
+    productRepository.setStatusById = jest.fn();
+    userRepository.deductProductPrice = jest.fn();
+    userRepository.addSoldProductPrice = jest.fn();
+
+    try {
+      //Act
+      await productService.buyProduct(productId, userId);
+    } catch (err) {
+      //Assert
+      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
+      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(userService.getUserById).toHaveBeenCalledTimes(1);
+      expect(userService.getUserById).toHaveBeenCalledWith(userId);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(0);
+      expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
+      expect(userRepository.deductProductPrice).toHaveBeenCalledTimes(0);
+      expect(userRepository.addSoldProductPrice).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(forbiddenError('Product not available for buying'));
+    }
+  });
+
+  it("Gives error if buyer doesn't have enough money", async () => {
+    //Arrange
+    const productId = 36;
+    const userId = 13;
+    const productData = {
+      userId: 12,
+      status: 1,
+      price: 1000,
+    };
+    const buyerData = {
+      money: 0,
+    };
+    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    userService.getUserById = jest.fn().mockResolvedValue(buyerData);
+    userService.checkIfUserIdExists = jest.fn();
+    productRepository.setStatusById = jest.fn();
+    userRepository.deductProductPrice = jest.fn();
+    userRepository.addSoldProductPrice = jest.fn();
+
+    try {
+      //Act
+      await productService.buyProduct(productId, userId);
+    } catch (err) {
+      //Assert
+      expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
+      expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+      expect(userService.getUserById).toHaveBeenCalledTimes(1);
+      expect(userService.getUserById).toHaveBeenCalledWith(userId);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(0);
+      expect(productRepository.setStatusById).toHaveBeenCalledTimes(0);
+      expect(userRepository.deductProductPrice).toHaveBeenCalledTimes(0);
+      expect(userRepository.addSoldProductPrice).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(forbiddenError('Cannot buy item, not enough money'));
+    }
+  });
+
+  it("Gives error if seller account doesn't exist", async () => {
+    //Arrange
+    const productId = 36;
+    const userId = 13;
+    const productData = {
+      userId: 12,
+      status: 1,
+      price: 10,
+    };
+    const buyerData = {
+      money: 1000,
+    };
+    productService.getProductDBData = jest.fn().mockResolvedValue(productData);
+    userService.getUserById = jest.fn().mockResolvedValue(buyerData);
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue('Userdata');
+    productRepository.setStatusById = jest.fn();
+    userRepository.deductProductPrice = jest.fn();
+    userRepository.addSoldProductPrice = jest.fn();
+
+    //Act
+    await productService.buyProduct(productId, userId);
+
+    //Assert
+    expect(productService.getProductDBData).toHaveBeenCalledTimes(1);
+    expect(productService.getProductDBData).toHaveBeenCalledWith(productId);
+    expect(userService.getUserById).toHaveBeenCalledTimes(1);
+    expect(userService.getUserById).toHaveBeenCalledWith(userId);
+    expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
+    expect(userService.checkIfUserIdExists).toHaveBeenCalledWith(
+      productData.userId
+    );
+    expect(productRepository.setStatusById).toHaveBeenCalledTimes(1);
+    expect(productRepository.setStatusById).toHaveBeenCalledWith(
+      productData.status,
+      productId
+    );
+    expect(userRepository.deductProductPrice).toHaveBeenCalledTimes(1);
+    expect(userRepository.deductProductPrice).toHaveBeenCalledWith(
+      userId,
+      productData.price
+    );
+    expect(userRepository.addSoldProductPrice).toHaveBeenCalledTimes(1);
+    expect(userRepository.addSoldProductPrice).toHaveBeenCalledWith(
+      productData.userId,
+      productData.price
+    );
+  });
+});
