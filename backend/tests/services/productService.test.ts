@@ -3,6 +3,7 @@ import { userService } from '../../src/services/userService';
 import { productService } from '../../src/services/productService';
 import {
   forbiddenError,
+  notFoundError,
   unauthorizedError,
 } from '../../src/services/generalErrorService';
 import { userRepository } from '../../src/repositories/user.repository';
@@ -270,5 +271,93 @@ describe('productService.getSellableProducts', () => {
     expect(productRepository.getSellableProducts).toHaveBeenCalledTimes(1);
     expect(productRepository.getSellableProducts).toHaveBeenCalledWith();
     expect(result).toEqual(sellableItems);
+  });
+});
+
+describe('productService.getProductById', () => {
+  it('Gives error when product is not found', async () => {
+    //Arrange
+    const productId = 36;
+    productRepository.getProductWithOwnerById = jest
+      .fn()
+      .mockResolvedValue(undefined);
+
+    try {
+      //Act
+      await productService.getProductById(productId);
+    } catch (err) {
+      //Assert
+      expect(productRepository.getProductWithOwnerById).toHaveBeenCalledTimes(
+        1
+      );
+      expect(productRepository.getProductWithOwnerById).toHaveBeenCalledWith(
+        productId
+      );
+      expect(err).toEqual(notFoundError('Product with this ID not found'));
+    }
+  });
+
+  it('Gives error when product status is not active', async () => {
+    //Arrange
+    const productId = 36;
+    const productDetails = {
+      status: 123,
+    };
+    productRepository.getProductWithOwnerById = jest
+      .fn()
+      .mockResolvedValue(productDetails);
+
+    try {
+      //Act
+      await productService.getProductById(productId);
+    } catch (err) {
+      //Assert
+      expect(productRepository.getProductWithOwnerById).toHaveBeenCalledTimes(
+        1
+      );
+      expect(productRepository.getProductWithOwnerById).toHaveBeenCalledWith(
+        productId
+      );
+      expect(err).toEqual(forbiddenError('This product is not available'));
+    }
+  });
+
+  it('Gives proper object', async () => {
+    //Arrange
+    const productId = 36;
+    const productDBData = {
+      id: 36,
+      name: 'One great thing',
+      description: 'This is the best!',
+      imgUrl: 'http://allthepics.com/beauty1.png',
+      price: 200,
+      status: 1,
+      userId: 12,
+      userName: 'John',
+    };
+    const productDetails = {
+      id: 36,
+      name: 'One great thing',
+      description: 'This is the best!',
+      imgUrl: 'http://allthepics.com/beauty1.png',
+      price: 200,
+      owner: {
+        id: 12,
+        name: 'John',
+      },
+    };
+    productRepository.getProductWithOwnerById = jest
+      .fn()
+      .mockResolvedValue(productDBData);
+
+    //Act
+    const result = await productService.getProductById(productId);
+
+    //Assert
+    expect(productRepository.getProductWithOwnerById).toHaveBeenCalledTimes(1);
+    expect(productRepository.getProductWithOwnerById).toHaveBeenCalledWith(
+      productId
+    );
+    expect(result).toEqual(productDetails);
   });
 });
