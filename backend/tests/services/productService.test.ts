@@ -275,7 +275,7 @@ describe('productService.getSellableProducts', () => {
 });
 
 describe('productService.getProductById', () => {
-  it('Gives error when product is not found', async () => {
+  it('Throws error when product is not found', async () => {
     //Arrange
     const productId = 36;
     productRepository.getProductWithOwnerById = jest
@@ -297,7 +297,7 @@ describe('productService.getProductById', () => {
     }
   });
 
-  it('Gives error when product status is not active', async () => {
+  it('Throws error when product status is not active', async () => {
     //Arrange
     const productId = 36;
     const productDetails = {
@@ -363,7 +363,7 @@ describe('productService.getProductById', () => {
 });
 
 describe('productService.buyProduct', () => {
-  it('Gives error if item belongs to buyer', async () => {
+  it('Throws error if item belongs to buyer', async () => {
     //Arrange
     const productId = 36;
     const userId = 12;
@@ -396,7 +396,7 @@ describe('productService.buyProduct', () => {
     }
   });
 
-  it('Gives error if item is not sellable', async () => {
+  it('Throws error if item is not sellable', async () => {
     //Arrange
     const productId = 36;
     const userId = 13;
@@ -428,7 +428,7 @@ describe('productService.buyProduct', () => {
     }
   });
 
-  it("Gives error if buyer doesn't have enough money", async () => {
+  it("Throws error if buyer doesn't have enough money", async () => {
     //Arrange
     const productId = 36;
     const userId = 13;
@@ -464,7 +464,7 @@ describe('productService.buyProduct', () => {
     }
   });
 
-  it("Gives error if seller account doesn't exist", async () => {
+  it("Throws error if seller account doesn't exist", async () => {
     //Arrange
     const productId = 36;
     const userId = 13;
@@ -555,7 +555,7 @@ describe('productService.buyProduct', () => {
 });
 
 describe('productService.getProductDBData', () => {
-  it('Gives error if product is not found in DB', async () => {
+  it('Throws error if product is not found in DB', async () => {
     //Arrange
     const productId = 36;
     productRepository.getProductById = jest.fn().mockResolvedValue(undefined);
