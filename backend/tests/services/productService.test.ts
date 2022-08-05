@@ -597,3 +597,134 @@ describe('productService.getProductDBData', () => {
     expect(result).toBe(productDBData);
   });
 });
+
+describe('productService.editProduct', () => {
+  const productDetails = {
+    productId: 36,
+    name: 'One great thing',
+    description: 'This is the best!',
+    imgUrl: 'http://allthepics.com/beauty1.png',
+    price: 200,
+    userId: 12,
+  };
+
+  it("Throws error when provided userId doesn't exist", async () => {
+    //Arrange
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue(false);
+    productRepository.getProductById = jest.fn();
+    productRepository.editProductById = jest.fn();
+
+    try {
+      //Act
+      await productService.editProduct(productDetails);
+    } catch (err) {
+      //Assert
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledWith(
+        productDetails.userId
+      );
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(0);
+      expect(productRepository.editProductById).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(
+        notFoundError('Cannot edit product, userId not found in db!')
+      );
+    }
+  });
+
+  it("Throws error when provided userId doesn't match the product's owner's ID", async () => {
+    //Arrange
+    const productDBData = {
+      userId: 13,
+    };
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue(true);
+    productRepository.getProductById = jest
+      .fn()
+      .mockResolvedValue(productDBData);
+    productRepository.editProductById = jest.fn();
+
+    try {
+      //Act
+      await productService.editProduct(productDetails);
+    } catch (err) {
+      //Assert
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledWith(
+        productDetails.userId
+      );
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(
+        productDetails.productId
+      );
+      expect(productRepository.editProductById).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(
+        forbiddenError("You can't edit this product, it doesn't belong to you!")
+      );
+    }
+  });
+
+  it('Throws error when the product is already sold', async () => {
+    //Arrange
+    const productDBData = {
+      userId: 12,
+      status: ProductStatusTypes.Sold,
+    };
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue(true);
+    productRepository.getProductById = jest
+      .fn()
+      .mockResolvedValue(productDBData);
+    productRepository.editProductById = jest.fn();
+
+    try {
+      //Act
+      await productService.editProduct(productDetails);
+    } catch (err) {
+      //Assert
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
+      expect(userService.checkIfUserIdExists).toHaveBeenCalledWith(
+        productDetails.userId
+      );
+      expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+      expect(productRepository.getProductById).toHaveBeenCalledWith(
+        productDetails.productId
+      );
+      expect(productRepository.editProductById).toHaveBeenCalledTimes(0);
+      expect(err).toEqual(
+        forbiddenError('Product is already sold, cannot be edited')
+      );
+    }
+  });
+
+  it('Call the proper methods if provided with the correct data', async () => {
+    //Arrange
+    const productDBData = {
+      userId: 12,
+      status: ProductStatusTypes.Active,
+    };
+    userService.checkIfUserIdExists = jest.fn().mockResolvedValue(true);
+    productRepository.getProductById = jest
+      .fn()
+      .mockResolvedValue(productDBData);
+    productRepository.editProductById = jest.fn();
+
+    //Act
+    await productService.editProduct(productDetails);
+
+    //Assert
+    expect(userService.checkIfUserIdExists).toHaveBeenCalledTimes(1);
+    expect(userService.checkIfUserIdExists).toHaveBeenCalledWith(
+      productDetails.userId
+    );
+    expect(productRepository.getProductById).toHaveBeenCalledTimes(1);
+    expect(productRepository.getProductById).toHaveBeenCalledWith(
+      productDetails.productId
+    );
+    expect(productRepository.editProductById).toHaveBeenCalledTimes(1);
+    expect(productRepository.editProductById).toHaveBeenCalledWith(
+      productDetails.productId,
+      productDetails.name,
+      productDetails.description,
+      productDetails.imgUrl,
+      productDetails.price
+    );
+  });
+});
