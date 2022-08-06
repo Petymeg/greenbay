@@ -6,5 +6,6 @@ export interface ProductWithOwnerViewModel {
   description: string;
   imgUrl: string;
   price: number;
+  status?: number;
   owner: ProductOwnerViewModel;
 }

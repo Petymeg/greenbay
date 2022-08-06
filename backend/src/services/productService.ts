@@ -78,15 +78,13 @@ export const productService = {
 
     if (!productDetails) throw notFoundError('Product with this ID not found');
 
-    if (productDetails.status !== ProductStatusTypes.Active)
-      throw forbiddenError('This product is not available');
-
     return {
       id: productDetails.id,
       name: productDetails.name,
       description: productDetails.description,
       imgUrl: productDetails.imgUrl,
       price: productDetails.price,
+      status: productDetails.status,
       owner: {
         id: productDetails.userId,
         name: productDetails.userName,

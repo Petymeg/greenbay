@@ -341,6 +341,7 @@ describe('productService.getProductById', () => {
       description: 'This is the best!',
       imgUrl: 'http://allthepics.com/beauty1.png',
       price: 200,
+      status: 1,
       owner: {
         id: 12,
         name: 'John',
