@@ -1,1 +1,36 @@
-<p>registration works!</p>
+<div class="main-container">
+  <h1 class="title">Greenbay</h1>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label class="username">Username</mat-label>
+      <input matInput placeholder="Username" formControlName="username" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        placeholder="Password"
+        type="password"
+        formControlName="password"
+      />
+
+      <mat-error *ngIf="password?.hasError('minlength')"
+        >Password must be 8 characters</mat-error
+      >
+      <mat-error
+        *ngIf="username?.hasError('required') && password?.hasError('required')"
+      >
+        Username, password and email are required</mat-error
+      >
+    </mat-form-field>
+    <div class="button-container">
+      <div class="sign-up">
+        <button mat-raised-button (click)="signUp()">SIGN UP</button>
+      </div>
+      <div class="login">
+        <p>Already have an account?</p>
+        <a routerLink="/login">Log in</a>
+      </div>
+    </div>
+  </form>
+</div>
