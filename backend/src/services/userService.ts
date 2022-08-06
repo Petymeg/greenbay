@@ -33,6 +33,7 @@ export const userService = {
     return {
       token,
       username,
+      money: 0,
     };
   },
 
@@ -63,6 +64,7 @@ export const userService = {
     return {
       token,
       username,
+      money: userData.money,
     };
   },
 
