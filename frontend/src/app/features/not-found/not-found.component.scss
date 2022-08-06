@@ -1,0 +1,38 @@
+.main-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .error-container {
+    min-width: 300px;
+    padding: 50px;
+    padding-bottom: 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    box-shadow: 5px 5px 20px rgba(255, 255, 255, 0.4),
+      5px -5px 20px rgba(255, 255, 255, 0.4),
+      -5px 5px 20px rgba(255, 255, 255, 0.4),
+      -5px -5px 20px rgba(255, 255, 255, 0.4);
+
+    h1,
+    p {
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 56px;
+      margin-bottom: 30px;
+    }
+
+    .text {
+      font-size: 24px;
+      margin-bottom: 50px;
+    }
+
+    a {
+      color: rgb(93, 173, 97);
+      text-decoration: none;
+    }
+  }
+}
