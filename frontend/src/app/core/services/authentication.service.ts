@@ -23,7 +23,8 @@ export class AuthenticationService {
       .pipe(
         tap(() => {
           this.router.navigate(['/login']);
-        })
+        }),
+        catchError(() => of(null))
       );
   }
 }

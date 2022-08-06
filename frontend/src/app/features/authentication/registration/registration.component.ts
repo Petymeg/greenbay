@@ -5,6 +5,8 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
+import { UserRegistrationRequestViewModel } from 'src/app/shared/models/UserRegistrationRequestViewModel';
 
 @Component({
   selector: 'app-registration',
@@ -12,8 +14,6 @@ import {
   styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent {
-  constructor() {}
-
   form = new FormGroup({
     username: new FormControl('', Validators.required),
     password: new FormControl('', [
@@ -21,6 +21,8 @@ export class RegistrationComponent {
       Validators.minLength(8),
     ]),
   });
+
+  constructor(private authenticationService: AuthenticationService) {}
 
   get username(): AbstractControl {
     return this.form.get('username') as AbstractControl;
@@ -33,8 +35,9 @@ export class RegistrationComponent {
   signUp(): void {
     if (this.form.valid) {
       const user = this.form.getRawValue();
-      console.log(user);
-      // this.authenticationService.registerUser(user).subscribe();
+      this.authenticationService
+        .registerUser(user as UserRegistrationRequestViewModel)
+        .subscribe();
     }
   }
 }
