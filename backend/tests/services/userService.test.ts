@@ -39,7 +39,8 @@ describe('userService.register', () => {
     const password = 'VerySecretPassword';
     const hashedPassword = 'oq837n349qc4mzc9t8vnv';
     const token = 'öpw9843nczia8vzoia';
-    userService.checkIfUsernameExists = jest.fn().mockResolvedValue(undefined);
+    const money = 0;
+    userService.checkIfUsernameExists = jest.fn().mockResolvedValue(false);
     passwordService.generateHash = jest.fn().mockReturnValue(hashedPassword);
     userRepository.register = jest.fn().mockResolvedValue(12);
     jwtService.generateAccessToken = jest.fn().mockReturnValue(token);
@@ -61,7 +62,7 @@ describe('userService.register', () => {
       username,
       RoleTypes.User
     );
-    expect(result).toEqual({ token, username });
+    expect(result).toEqual({ token, username, money });
   });
 });
 
@@ -123,6 +124,7 @@ describe('userservice.login', () => {
       id: 12,
       password: 'anc3834ztvomo4v',
       roleId: 2,
+      money: 1000,
     };
     const token = 'öpw9843nczia8vzoia';
     userRepository.getUserByName = jest.fn().mockResolvedValue(userData);
@@ -146,7 +148,7 @@ describe('userservice.login', () => {
       username,
       userData.roleId
     );
-    expect(result).toEqual({ token, username });
+    expect(result).toEqual({ token, username, money: userData.money });
   });
 });
 
