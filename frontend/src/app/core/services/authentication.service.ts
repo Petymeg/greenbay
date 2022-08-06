@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { Observable, tap, catchError, of } from 'rxjs';
+import { Observable, tap, map } from 'rxjs';
 import { UserRegistrationRequestViewModel } from 'src/app/shared/models/UserRegistrationRequestViewModel';
 import { UserRegistrationViewModel } from 'src/app/shared/models/UserRegistrationViewModel';
 
@@ -12,9 +12,7 @@ import { UserRegistrationViewModel } from 'src/app/shared/models/UserRegistratio
 export class AuthenticationService {
   constructor(private http: HttpClient, private router: Router) {}
 
-  registerUser(
-    userdata: UserRegistrationRequestViewModel
-  ): Observable<UserRegistrationViewModel> {
+  registerUser(userdata: UserRegistrationRequestViewModel): Observable<void> {
     return this.http
       .post<UserRegistrationViewModel>(
         `${environment.apiUrl}/user/register`,
@@ -24,7 +22,7 @@ export class AuthenticationService {
         tap(() => {
           this.router.navigate(['/login']);
         }),
-        catchError(() => of(null))
+        map(() => undefined)
       );
   }
 }
