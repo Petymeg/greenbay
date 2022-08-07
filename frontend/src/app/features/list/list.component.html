@@ -1,4 +1,9 @@
-<app-list-item
-  *ngFor="let item of products"
-  [productDetails]="item"
-></app-list-item>
+<div class="main-container">
+  <div class="product-count">{{ products.length }} items found</div>
+  <div class="item-container">
+    <app-list-item
+      *ngFor="let item of products"
+      [productDetails]="item"
+    ></app-list-item>
+  </div>
+</div>
