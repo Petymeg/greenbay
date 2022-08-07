@@ -12,6 +12,30 @@ import { UserRegistrationViewModel } from 'src/app/shared/models/UserRegistratio
 export class AuthenticationService {
   constructor(private http: HttpClient, private router: Router) {}
 
+  setToken(token: string): void {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string {
+    return localStorage.getItem('token');
+  }
+
+  setUsername(username: string): void {
+    localStorage.setItem('username', username);
+  }
+
+  getUsername(): string {
+    return localStorage.getItem('username');
+  }
+
+  setMoney(money: string): void {
+    localStorage.setItem('money', money);
+  }
+
+  getMoney(): string {
+    return localStorage.getItem('money');
+  }
+
   registerUser(userdata: UserRegistrationRequestViewModel): Observable<void> {
     return this.http
       .post<UserRegistrationViewModel>(
@@ -19,8 +43,11 @@ export class AuthenticationService {
         userdata
       )
       .pipe(
-        tap(() => {
-          this.router.navigate(['/login']);
+        tap((x) => {
+          this.setToken(x.token);
+          this.setUsername(x.username);
+          this.setMoney(`${x.money}`);
+          this.router.navigate(['/main']);
         }),
         map(() => undefined)
       );
