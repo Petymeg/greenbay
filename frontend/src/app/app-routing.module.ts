@@ -10,6 +10,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'login',
+    loadChildren: () =>
+      import('./features/authentication/login/login.module').then(
+        (m) => m.LoginModule
+      ),
+  },
+  {
     path: '**',
     loadChildren: () =>
       import('./features/not-found/not-found.module').then(
