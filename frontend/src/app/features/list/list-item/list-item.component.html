@@ -1,12 +1,17 @@
 <div class="main-container">
   <div class="card-container" [routerLink]="['/products', productDetails.id]">
-    <p>ID: {{ productDetails.id }}</p>
-    <p>Name: {{ productDetails.name }}</p>
-    <p>Description: {{ productDetails.description }}</p>
-    <div><img [src]="productDetails.imgUrl" alt="product image" /></div>
-    <p>Price: {{ productDetails.price }}</p>
-    <p>Owner details:</p>
-    <p>ID: {{ productDetails.owner.id }}</p>
-    <p>Name: {{ productDetails.owner.name }}</p>
+    <img [src]="productDetails.imgUrl" alt="product image" />
+    <div class="details">
+      <div class="text">
+        <h2>{{ productDetails.name }}</h2>
+        <p>{{ productDetails.description | slice: 0:80 }}</p>
+      </div>
+      <div class="price">
+        <h1>{{ productDetails.price | currency: "USD":"symbol" }}</h1>
+      </div>
+      <div class="seller">
+        <p>Seller: {{ productDetails.owner.name }}</p>
+      </div>
+    </div>
   </div>
 </div>
