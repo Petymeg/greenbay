@@ -1,1 +1,4 @@
-<p>list works!</p>
+<app-list-item
+  *ngFor="let item of products"
+  [productDetails]="item"
+></app-list-item>
