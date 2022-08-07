@@ -1,8 +1,16 @@
 <div class="main-container">
-  <div class="product-count">{{ products.length }} items found</div>
+  <div *ngIf="viewableProducts" class="product-count">
+    {{ viewableProducts.length }} items found
+  </div>
+  <mat-slide-toggle
+    color="primary"
+    [(ngModel)]="viewOwnProducts"
+    (change)="setViewableProducts()"
+    >View own products</mat-slide-toggle
+  >
   <div class="item-container">
     <app-list-item
-      *ngFor="let item of products"
+      *ngFor="let item of viewableProducts"
       [productDetails]="item"
     ></app-list-item>
   </div>

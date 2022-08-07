@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
 
@@ -9,12 +10,26 @@ import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwne
 })
 export class ListComponent implements OnInit {
   products: ProductWithOwnerViewModel[];
+  viewableProducts: ProductWithOwnerViewModel[];
+  viewOwnProducts: boolean;
 
-  constructor(private producService: ProductService) {}
+  constructor(
+    private producService: ProductService,
+    private athenticationService: AuthenticationService
+  ) {}
 
   ngOnInit(): void {
     this.producService.getSellableItems().subscribe((x) => {
       this.products = x;
+      this.setViewableProducts();
     });
+  }
+
+  setViewableProducts(): void {
+    this.viewOwnProducts
+      ? (this.viewableProducts = this.products)
+      : (this.viewableProducts = this.products.filter(
+          (x) => x.owner.name !== this.athenticationService.getUsername()
+        ));
   }
 }

@@ -8,11 +8,22 @@
   .item-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    // flex-wrap: wrap;
+    justify-content: flex-start;
 
     app-list-item {
       width: 33%;
     }
   }
+}
+
+::ng-deep
+  .mat-slide-toggle.mat-checked:not(.mat-disabled)
+  .mat-slide-toggle-thumb {
+  background-color: rgb(69, 148, 75);
+}
+
+::ng-deep
+  .mat-slide-toggle.mat-checked:not(.mat-disabled)
+  .mat-slide-toggle-bar {
+  background-color: rgb(151, 197, 154);
 }

@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,8 @@ import { RouterModule } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
+    FormsModule,
   ],
   exports: [
     CommonModule,
@@ -23,6 +26,8 @@ import { RouterModule } from '@angular/router';
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
+    MatSlideToggleModule,
+    FormsModule,
   ],
 })
 export class SharedModule {}
