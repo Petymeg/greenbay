@@ -18,7 +18,7 @@
   form {
     display: flex;
     flex-direction: column;
-    min-width: 300px;
+    min-width: 350px;
     padding: 50px;
     padding-bottom: 10px;
     background-color: rgba(255, 255, 255, 0.5);
@@ -36,6 +36,7 @@
 
       .sign-up {
         button {
+          width: 90px;
           background-color: #65a92b;
           color: #fff;
         }
