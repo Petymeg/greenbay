@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { Observable, tap, map } from 'rxjs';
 import { UserRegistrationRequestViewModel } from 'src/app/shared/models/UserRegistrationRequestViewModel';
 import { UserRegistrationViewModel } from 'src/app/shared/models/UserRegistrationViewModel';
+import { UserLoginRequestViewModel } from 'src/app/shared/models/UserLoginRequestViewModel';
+import { UserLoginViewModel } from 'src/app/shared/models/UserLoginViewModel';
 
 @Injectable({
   providedIn: 'root',
@@ -42,6 +44,20 @@ export class AuthenticationService {
         `${environment.apiUrl}/user/register`,
         userdata
       )
+      .pipe(
+        tap((x) => {
+          this.setToken(x.token);
+          this.setUsername(x.username);
+          this.setMoney(`${x.money}`);
+          this.router.navigate(['/main']);
+        }),
+        map(() => undefined)
+      );
+  }
+
+  login(loginData: UserLoginRequestViewModel): Observable<void> {
+    return this.http
+      .post<UserLoginViewModel>(`${environment.apiUrl}/user/login`, loginData)
       .pipe(
         tap((x) => {
           this.setToken(x.token);
