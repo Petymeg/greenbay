@@ -68,4 +68,8 @@ export class AuthenticationService {
         map(() => undefined)
       );
   }
+
+  logout(): void {
+    localStorage.clear();
+  }
 }
