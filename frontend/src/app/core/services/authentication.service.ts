@@ -49,7 +49,7 @@ export class AuthenticationService {
           this.setToken(x.token);
           this.setUsername(x.username);
           this.setMoney(`${x.money}`);
-          this.router.navigate(['/main']);
+          this.router.navigate(['/list']);
         }),
         map(() => undefined)
       );
@@ -63,7 +63,7 @@ export class AuthenticationService {
           this.setToken(x.token);
           this.setUsername(x.username);
           this.setMoney(`${x.money}`);
-          this.router.navigate(['/main']);
+          this.router.navigate(['/list']);
         }),
         map(() => undefined)
       );
