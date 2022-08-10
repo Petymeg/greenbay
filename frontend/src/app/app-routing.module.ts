@@ -17,9 +17,11 @@ const routes: Routes = [
       ),
   },
   {
-    path: 'list',
+    path: 'products',
     loadChildren: () =>
-      import('./features/list/list.module').then((m) => m.ListModule),
+      import('./features/products/products.module').then(
+        (m) => m.ProductsModule
+      ),
   },
   {
     path: '**',
