@@ -7,7 +7,12 @@ import { ListItemComponent } from './list/list-item/list-item.component';
 import { ViewComponent } from './view/view.component';
 
 @NgModule({
-  declarations: [ProductsComponent, ListComponent, ListItemComponent, ViewComponent],
+  declarations: [
+    ProductsComponent,
+    ListComponent,
+    ListItemComponent,
+    ViewComponent,
+  ],
   imports: [SharedModule, ProductsRoutingModule],
 })
 export class ProductsModule {}

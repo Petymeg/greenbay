@@ -1,1 +1,17 @@
-<p>view works!</p>
+<div class="main-container">
+  <div *ngIf="productDetails" class="card-container">
+    <img [src]="productDetails.imgUrl" alt="product image" />
+    <div class="details">
+      <div class="text">
+        <h2>{{ productDetails.name }}</h2>
+        <p>{{ productDetails.description | slice: 0:80 }}</p>
+      </div>
+      <div class="price">
+        <h1>{{ productDetails.price | currency: "USD":"symbol" }}</h1>
+      </div>
+      <div class="seller">
+        <p>Seller: {{ productDetails.owner.name }}</p>
+      </div>
+    </div>
+  </div>
+</div>

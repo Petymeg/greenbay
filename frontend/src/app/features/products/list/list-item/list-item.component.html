@@ -1,5 +1,9 @@
 <div class="main-container">
-  <div class="card-container" [routerLink]="['/products', productDetails.id]">
+  <div
+    class="card-container"
+    [routerLink]="['/products/view']"
+    [queryParams]="{ id: productDetails.id }"
+  >
     <img [src]="productDetails.imgUrl" alt="product image" />
     <div class="details">
       <div class="text">
