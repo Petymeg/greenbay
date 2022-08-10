@@ -14,12 +14,12 @@ export class ListComponent implements OnInit {
   viewOwnProducts: boolean;
 
   constructor(
-    private producService: ProductService,
+    private productService: ProductService,
     private athenticationService: AuthenticationService
   ) {}
 
   ngOnInit(): void {
-    this.producService.getSellableItems().subscribe((x) => {
+    this.productService.getSellableItems().subscribe((x) => {
       this.products = x;
       this.setViewableProducts();
     });
