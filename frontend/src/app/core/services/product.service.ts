@@ -15,4 +15,10 @@ export class ProductService {
       `${environment.apiUrl}/product`
     );
   }
+
+  getProductDetails(productId: number): Observable<ProductWithOwnerViewModel> {
+    return this.http.get<ProductWithOwnerViewModel>(
+      `${environment.apiUrl}/product/${productId}`
+    );
+  }
 }
