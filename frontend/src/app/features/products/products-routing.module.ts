@@ -11,7 +11,7 @@ const routes: Routes = [
     component: ProductsComponent,
     children: [
       { path: 'list', component: ListComponent },
-      { path: 'view', component: ViewComponent },
+      { path: 'view/:id', component: ViewComponent },
       { path: 'add', component: AddComponent },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
     ],

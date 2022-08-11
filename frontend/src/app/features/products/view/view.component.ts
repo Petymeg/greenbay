@@ -17,10 +17,9 @@ export class ViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params) => {
+    this.activatedRoute.params.subscribe((params) => {
       this.productService.getProductDetails(params['id']).subscribe((x) => {
         this.productDetails = x;
-        console.log(this.productDetails);
       });
     });
   }
