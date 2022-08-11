@@ -1,1 +1,26 @@
-<p>add works!</p>
+<div class="main-container">
+    <div class="title">Add a new product</div>
+    <form [formGroup]="form">
+        <mat-form-field appearance="outline">
+            <mat-label class="name">Name</mat-label>
+            <input matInput placeholder="Name" formControlName="name" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label class="description">Description</mat-label>
+            <input matInput placeholder="Description" formControlName="description" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label class="imgUrl">Image URL</mat-label>
+            <input matInput placeholder="http://yoursite.com/yourimage.jpg" formControlName="imgUrl" />
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label class="price">Price (USD)</mat-label>
+            <input matInput placeholder="100" formControlName="price" />
+        </mat-form-field>
+        <div class="button-container">
+            <div class="add-product">
+              <button mat-raised-button>ADD PRODUCT</button>
+            </div>
+        </div>
+    </form>
+</div>
