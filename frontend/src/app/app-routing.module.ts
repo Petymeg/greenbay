@@ -3,6 +3,11 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
+    path: '',
+    redirectTo: 'products',
+    pathMatch: 'full',
+  },
+  {
     path: 'register',
     loadChildren: () =>
       import('./features/authentication/registration/registration.module').then(

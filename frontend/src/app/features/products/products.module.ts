@@ -5,6 +5,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
 import { ListComponent } from './list/list.component';
 import { ListItemComponent } from './list/list-item/list-item.component';
 import { ViewComponent } from './view/view.component';
+import { AddComponent } from './add/add.component';
 
 @NgModule({
   declarations: [
@@ -12,6 +13,7 @@ import { ViewComponent } from './view/view.component';
     ListComponent,
     ListItemComponent,
     ViewComponent,
+    AddComponent,
   ],
   imports: [SharedModule, ProductsRoutingModule],
 })
