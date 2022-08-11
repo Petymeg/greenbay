@@ -5,6 +5,17 @@
     5px 0 20px rgba(255, 255, 255, 0.4);
   background-color: rgba(255, 255, 255, 0.5);
 
+  .product-count{
+    text-align: center;
+
+    &.no-products{
+      display: flex;
+      flex-direction: column;
+      height: 200px;
+      justify-content: center;
+    }
+  }
+
   .item-container {
     display: flex;
     flex-wrap: wrap;
