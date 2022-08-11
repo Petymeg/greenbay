@@ -1,9 +1,9 @@
 <div class="main-container">
-  <div *ngIf="viewableProducts" [ngClass]="viewableProducts.length === 0 ? 'no-products' : ''" class="product-count">
+  <div *ngIf="viewableProducts" [ngClass]="products.length === 0 ? 'no-products' : ''" class="product-count">
     <span>{{ viewableProducts.length }} items found</span>
   </div>
   <mat-slide-toggle
-    *ngIf="viewableProducts && viewableProducts.length > 0"
+    *ngIf="viewableProducts && products.length > 0"
     color="primary"
     [(ngModel)]="viewOwnProducts"
     (change)="setViewableProducts()"
