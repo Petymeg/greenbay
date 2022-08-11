@@ -1,0 +1,32 @@
+.main-container{
+    width: 100%;
+    background-color: green;
+
+    .nav{
+        min-width: 600px;
+        width: 80%;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;           
+        
+        .menu-item{
+            padding: 16px 20px;
+            color: white;
+
+            &:hover{
+                cursor: pointer;
+                background-color: rgb(208, 231, 210);
+                color: darkgreen;
+            }
+        }
+
+        ul{
+            margin: 0;
+            display: flex; 
+            
+            li{
+                list-style-type: none;
+            }
+        }
+    }
+}
