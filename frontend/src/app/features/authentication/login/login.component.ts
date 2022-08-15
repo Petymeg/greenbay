@@ -16,7 +16,7 @@ import { UserLoginRequestViewModel } from 'src/app/shared/models/UserLoginReques
 export class LoginComponent {
   form = new FormGroup({
     username: new FormControl('', Validators.required),
-    password: new FormControl('', [Validators.required]),
+    password: new FormControl('', Validators.required),
   });
 
   constructor(private authenticationService: AuthenticationService) {}
