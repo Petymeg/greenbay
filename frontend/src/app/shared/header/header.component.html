@@ -6,9 +6,10 @@
         alt="Greenbay logo"
         [routerLink]="'/products'"
       />
-      <div class="user-menu" [matMenuTriggerFor]="userMenu">
+      <div class="user-menu" [matMenuTriggerFor]="userMenu" #t="matMenuTrigger">
         Hi, {{ userName }}!
-        <mat-icon>keyboard_arrow_down</mat-icon>
+        <mat-icon *ngIf="!t.menuOpen; else open">keyboard_arrow_down</mat-icon>
+        <ng-template #open><mat-icon>keyboard_arrow_up</mat-icon></ng-template>
       </div>
       <mat-menu #userMenu="matMenu">
         <div mat-menu-item>Manage products</div>
