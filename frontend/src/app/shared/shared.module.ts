@@ -9,6 +9,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -23,6 +24,7 @@ import { MatMenuModule } from '@angular/material/menu';
     FormsModule,
     MatIconModule,
     MatMenuModule,
+    MatSnackBarModule,
   ],
   exports: [
     CommonModule,
@@ -36,6 +38,7 @@ import { MatMenuModule } from '@angular/material/menu';
     HeaderComponent,
     MatIconModule,
     MatMenuModule,
+    MatSnackBarModule,
   ],
 })
 export class SharedModule {}

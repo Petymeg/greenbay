@@ -14,3 +14,15 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   background-color: rgb(203, 243, 206);
 }
+
+.green-snackbar,
+.green-snackbar .mat-simple-snackbar-action {
+  color: white;
+  background-color: green;
+}
+
+.red-snackbar,
+.red-snackbar .mat-simple-snackbar-action {
+  color: white;
+  background-color: red;
+}
