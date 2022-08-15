@@ -7,10 +7,7 @@ import { BuyProductRequestViewModel } from '../models/view/BuyProductRequestView
 import { EditProductRequestViewModel } from '../models/view/EditProductRequestViewModel';
 import { ProductStatusRequestViewModel } from '../models/view/ProductStatusRequestViewModel';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
-import {
-  badRequestError,
-  forbiddenError,
-} from '../services/generalErrorService';
+import { badRequestError } from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
 import { productService } from '../services/productService';
 
@@ -71,7 +68,7 @@ export const productController = {
     };
 
     try {
-      const result = await productService.setStatus(statusDetails);
+      await productService.setStatus(statusDetails);
       res.status(200).send({ statusCode });
     } catch (err) {
       next(err);
