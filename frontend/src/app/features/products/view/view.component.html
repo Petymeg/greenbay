@@ -4,13 +4,21 @@
     <div class="details">
       <div class="text">
         <h2>{{ productDetails.name }}</h2>
-        <p>{{ productDetails.description | slice: 0:80 }}</p>
+        <p>{{ productDetails.description }}</p>
       </div>
       <div class="price">
         <h1>{{ productDetails.price | currency: "USD":"symbol" }}</h1>
       </div>
-      <div class="seller">
+      <div class="footer">
         <p>Seller: {{ productDetails.owner.name }}</p>
+        <button *ngIf="!isOwnProduct; else edit" mat-raised-button class="buy">
+          BUY
+        </button>
+        <ng-template #edit>
+          <button *ngIf="isOwnProduct" mat-raised-button class="edit">
+            EDIT
+          </button>
+        </ng-template>
       </div>
     </div>
   </div>

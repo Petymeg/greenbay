@@ -1,0 +1,72 @@
+.main-container {
+  min-width: 550px;
+  width: 80%;
+  margin: 0 auto;
+  box-shadow: -5px 0 20px rgba(255, 255, 255, 0.4),
+    5px 0 20px rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 0;
+
+  .card-container {
+    border: 3px solid rgb(203, 243, 206);
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    width: 90%;
+    height: 90%;
+    transition: 0.35s;
+    display: flex;
+    justify-content: space-between;
+
+    img {
+      width: 40%;
+      object-fit: contain;
+    }
+
+    .details {
+      width: 55%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1,
+      h2 {
+        font-weight: 600;
+      }
+
+      .text {
+        height: 40%;
+        overflow-y: hidden;
+      }
+
+      .footer {
+        display: flex;
+        justify-content: space-between;
+
+        p {
+          text-align: left;
+        }
+
+        button {
+          &.buy {
+            background-color: green;
+            color: white;
+          }
+          &.edit {
+            background-color: orange;
+            color: white;
+          }
+        }
+      }
+    }
+  }
+}
