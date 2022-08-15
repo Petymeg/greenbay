@@ -7,6 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { HeaderComponent } from './header/header.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [HeaderComponent],
@@ -19,6 +21,8 @@ import { HeaderComponent } from './header/header.component';
     ReactiveFormsModule,
     MatSlideToggleModule,
     FormsModule,
+    MatIconModule,
+    MatMenuModule,
   ],
   exports: [
     CommonModule,
@@ -30,6 +34,8 @@ import { HeaderComponent } from './header/header.component';
     MatSlideToggleModule,
     FormsModule,
     HeaderComponent,
+    MatIconModule,
+    MatMenuModule,
   ],
 })
 export class SharedModule {}

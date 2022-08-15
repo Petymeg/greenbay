@@ -11,40 +11,40 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 20px;
+
+    .menu {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      img {
+        height: 30px;
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+        color: white;
+        margin: 0 20px;
+      }
+    }
 
     .menu-item {
       padding: 16px 20px;
       color: white;
-
-      &:hover {
-        cursor: pointer;
-        background-color: rgb(208, 231, 210);
-        color: darkgreen;
-      }
-    }
-
-    ul {
-      margin: 0;
-      display: flex;
-
-      li {
-        list-style-type: none;
-      }
-    }
-
-    img {
-      height: 30px;
       cursor: pointer;
+    }
+
+    .menu-item:hover {
+      background-color: rgb(208, 231, 210);
+      color: darkgreen;
     }
 
     .right-container {
       display: flex;
       color: yellow;
       align-items: center;
-
-      span {
-        margin-right: 10px;
-      }
     }
   }
 }
