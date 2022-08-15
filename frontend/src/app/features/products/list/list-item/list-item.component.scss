@@ -21,9 +21,28 @@
       cursor: pointer;
     }
 
-    img {
+    .left-container {
       width: 40%;
-      object-fit: contain;
+      max-height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+
+      img {
+        object-fit: contain;
+        max-height: 80%;
+      }
+
+      button {
+        &.buy {
+          background-color: green;
+          color: white;
+        }
+        &.edit {
+          background-color: orange;
+          color: white;
+        }
+      }
     }
 
     .details {
@@ -48,8 +67,10 @@
         overflow-y: hidden;
       }
 
-      .seller > p {
-        text-align: right;
+      .seller {
+        p {
+          text-align: left;
+        }
       }
     }
   }

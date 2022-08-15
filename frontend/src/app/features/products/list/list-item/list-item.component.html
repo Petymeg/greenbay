@@ -3,7 +3,17 @@
     class="card-container"
     [routerLink]="['/products/view', productDetails.id]"
   >
-    <img [src]="productDetails.imgUrl" alt="product image" />
+    <div class="left-container">
+      <img [src]="productDetails.imgUrl" alt="product image" />
+      <button *ngIf="!isOwnProduct; else edit" mat-raised-button class="buy">
+        BUY
+      </button>
+      <ng-template #edit>
+        <button *ngIf="isOwnProduct" mat-raised-button class="edit">
+          EDIT
+        </button>
+      </ng-template>
+    </div>
     <div class="details">
       <div class="text">
         <h2>{{ productDetails.name }}</h2>
