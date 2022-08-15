@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from './core/interceptors/token.interceptor';
+import { UserInfoInterceptor } from './core/interceptors/user-info.interceptor';
 
 @NgModule({
   declarations: [AppComponent],
@@ -21,6 +22,11 @@ import { TokenInterceptor } from './core/interceptors/token.interceptor';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: UserInfoInterceptor,
       multi: true,
     },
   ],
