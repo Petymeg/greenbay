@@ -1,14 +1,21 @@
 <div class="main-container">
-  <div *ngIf="viewableProducts" [ngClass]="products.length === 0 ? 'no-products' : ''" class="product-count">
-    <span>{{ viewableProducts.length }} items found</span>
-  </div>
-  <mat-slide-toggle
-    *ngIf="viewableProducts && products.length > 0"
-    color="primary"
-    [(ngModel)]="viewOwnProducts"
-    (change)="setViewableProducts()"
-    >View own products</mat-slide-toggle
+  <div
+    class="sub-header"
+    *ngIf="products"
+    [ngClass]="{ 'no-products': !products.length }"
   >
+    <div class="toggle-container">
+      <mat-slide-toggle
+        color="primary"
+        [(ngModel)]="viewOwnProducts"
+        (change)="setViewableProducts()"
+        >View own products</mat-slide-toggle
+      >
+    </div>
+    <div class="item-count">
+      <span>{{ viewableProducts.length }} items found</span>
+    </div>
+  </div>
   <div class="item-container">
     <app-list-item
       *ngFor="let item of viewableProducts"
