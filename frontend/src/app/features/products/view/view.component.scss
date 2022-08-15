@@ -51,21 +51,34 @@
       .footer {
         display: flex;
         justify-content: space-between;
+        align-items: center;
 
         p {
           text-align: left;
         }
 
-        button {
+        .button-container {
           width: 50%;
+          display: flex;
+          justify-content: flex-end;
 
-          &.buy {
-            background-color: green;
-            color: white;
-          }
-          &.edit {
-            background-color: orange;
-            color: white;
+          button {
+            width: 48%;
+
+            &.buy {
+              background-color: green;
+              color: white;
+            }
+
+            &.edit {
+              background-color: orange;
+              color: white;
+            }
+
+            &.disabled {
+              background-color: darkgray;
+              color: white;
+            }
           }
         }
       }

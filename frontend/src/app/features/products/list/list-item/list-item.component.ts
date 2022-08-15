@@ -22,8 +22,4 @@ export class ListItemComponent implements OnInit {
       this.productDetails.owner.name ===
       this.authenticationService.getUsername();
   }
-
-  buy(): void {
-    this.productService.buyProduct(this.productDetails.id).subscribe();
-  }
 }
