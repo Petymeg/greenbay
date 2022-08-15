@@ -1,5 +1,6 @@
 import { UserDomainModel } from '../models/domain/UserDomainModel';
 import { RoleTypes } from '../models/enums/RoleType';
+import { UserInfoViewModel } from '../models/view/UserInfoViewModel';
 import { UserLoginViewModel } from '../models/view/UserLoginViewModel';
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { userRepository } from '../repositories/user.repository';
@@ -75,5 +76,13 @@ export const userService = {
       throw notFoundError('userId not found.');
     }
     return userDBData;
+  },
+
+  async getUserInfo(userId: number): Promise<UserInfoViewModel> {
+    const userData = await this.getUserById(userId);
+
+    return {
+      money: userData.money,
+    };
   },
 };

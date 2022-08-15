@@ -11,7 +11,11 @@ const swaggerOptions: SwaggerOptions = {
     },
     servers: [`${config.servers.host}:${config.servers.port}`],
   },
-  apis: ['./src/routes/user.routes.ts', './src/routes/product.routes.ts'],
+  apis: [
+    './src/routes/user.routes.ts',
+    './src/routes/userInfo.routes.ts',
+    './src/routes/product.routes.ts',
+  ],
 };
 
 export const swaggerDocs = swaggerJSDoc(swaggerOptions);

@@ -1,8 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { UserLoginRequestViewModel } from '../models/common/UserLoginRequestViewModel';
 import { UserRegistrationRequestViewModel } from '../models/common/UserRegistrationRequestViewModel';
+import { UserInfoViewModel } from '../models/view/UserInfoViewModel';
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { badRequestError } from '../services/generalErrorService';
+import { jwtService } from '../services/JwtService';
 import { userService } from '../services/userService';
 
 export const userController = {
@@ -62,6 +64,22 @@ export const userController = {
     try {
       const userData = await userService.login(username, password);
       res.status(200).send(userData);
+    } catch (error) {
+      next(error);
+    }
+  },
+
+  async getUserInfo(
+    req: Request,
+    res: Response<UserInfoViewModel>,
+    next: NextFunction
+  ) {
+    const token = jwtService.getTokenFromRequest(req);
+    const { userId } = jwtService.getTokenPayload(token);
+
+    try {
+      const userInfo = await userService.getUserInfo(userId);
+      res.status(200).send(userInfo);
     } catch (error) {
       next(error);
     }
