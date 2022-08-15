@@ -6,9 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
-  declarations: [],
+  declarations: [HeaderComponent],
   imports: [
     CommonModule,
     RouterModule,
@@ -28,6 +29,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ReactiveFormsModule,
     MatSlideToggleModule,
     FormsModule,
+    HeaderComponent,
   ],
 })
 export class SharedModule {}
