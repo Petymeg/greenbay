@@ -38,6 +38,10 @@ export class AuthenticationService {
     return localStorage.getItem('money');
   }
 
+  clearLocalStorage(): void {
+    localStorage.clear();
+  }
+
   registerUser(userdata: UserRegistrationRequestViewModel): Observable<void> {
     return this.http
       .post<UserRegistrationViewModel>(
@@ -70,6 +74,7 @@ export class AuthenticationService {
   }
 
   logout(): void {
-    localStorage.clear();
+    this.clearLocalStorage();
+    this.router.navigate(['/login']);
   }
 }
