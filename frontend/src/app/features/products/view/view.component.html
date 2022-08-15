@@ -1,5 +1,5 @@
 <div class="main-container">
-  <div *ngIf="productDetails" class="card-container">
+  <div *ngIf="productDetails; else noProduct" class="card-container">
     <img [src]="productDetails.imgUrl" alt="product image" />
     <div class="details">
       <div class="text">
@@ -22,4 +22,7 @@
       </div>
     </div>
   </div>
+  <ng-template #noProduct>
+    <p>Product not found</p>
+  </ng-template>
 </div>
