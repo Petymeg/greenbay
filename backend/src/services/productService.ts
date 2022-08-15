@@ -110,7 +110,7 @@ export const productService = {
         "Purchase not possible, seller account doesn't exist!"
       );
 
-    await productRepository.setStatusById(ProductStatusTypes.Sold, productId);
+    await productRepository.setStatusById(productId, ProductStatusTypes.Sold);
     await userRepository.deductProductPrice(userId, productData.price);
     await userRepository.addSoldProductPrice(
       productData.userId,
