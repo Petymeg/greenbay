@@ -5,7 +5,12 @@
   >
     <div class="left-container">
       <img [src]="productDetails.imgUrl" alt="product image" />
-      <button *ngIf="!isOwnProduct; else edit" mat-raised-button class="buy">
+      <button
+        *ngIf="!isOwnProduct; else edit"
+        mat-raised-button
+        class="buy"
+        (click)="buy()"
+      >
         BUY
       </button>
       <ng-template #edit>

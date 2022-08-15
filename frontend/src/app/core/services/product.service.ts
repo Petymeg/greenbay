@@ -6,12 +6,17 @@ import { AddUserProductRequestViewModel } from 'src/app/shared/models/AddUserPro
 import { AddUserProductViewModel } from 'src/app/shared/models/AddUserProductViewModel';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
 import { environment } from 'src/environments/environment';
+import { SnackbarService } from './snackbar.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private snackBarService: SnackbarService
+  ) {}
 
   getSellableItems(): Observable<ProductWithOwnerViewModel[]> {
     return this.http.get<ProductWithOwnerViewModel[]>(
@@ -36,6 +41,18 @@ export class ProductService {
           this.router.navigate([`/products/view`, x.productId]);
         }),
         map(() => undefined)
+      );
+  }
+
+  buyProduct(productId: number): Observable<void> {
+    return this.http
+      .post<void>(`${environment.apiUrl}/product/buy`, {
+        productId,
+      })
+      .pipe(
+        tap(() => {
+          this.snackBarService.showSuccessMessage('Purchase successful!');
+        })
       );
   }
 }

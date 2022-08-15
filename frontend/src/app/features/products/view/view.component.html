@@ -11,7 +11,12 @@
       </div>
       <div class="footer">
         <p>Seller: {{ productDetails.owner.name }}</p>
-        <button *ngIf="!isOwnProduct; else edit" mat-raised-button class="buy">
+        <button
+          *ngIf="!isOwnProduct; else edit"
+          mat-raised-button
+          class="buy"
+          (click)="buy()"
+        >
           BUY
         </button>
         <ng-template #edit>

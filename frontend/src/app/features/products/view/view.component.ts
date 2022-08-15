@@ -30,4 +30,8 @@ export class ViewComponent implements OnInit {
       });
     });
   }
+
+  buy(): void {
+    this.productService.buyProduct(this.productDetails.id).subscribe();
+  }
 }
