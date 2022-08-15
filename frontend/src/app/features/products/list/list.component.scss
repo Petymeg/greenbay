@@ -6,10 +6,10 @@
     5px 0 20px rgba(255, 255, 255, 0.4);
   background-color: rgba(255, 255, 255, 0.5);
 
-  .product-count{
+  .product-count {
     text-align: center;
 
-    &.no-products{
+    &.no-products {
       display: flex;
       flex-direction: column;
       height: 200px;
@@ -20,7 +20,7 @@
   .item-container {
     display: flex;
     flex-wrap: wrap;
-    justify-content: flex-start;
+    justify-content: space-evenly;
 
     app-list-item {
       min-width: 300px;
