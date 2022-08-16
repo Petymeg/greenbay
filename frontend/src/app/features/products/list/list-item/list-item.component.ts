@@ -18,4 +18,9 @@ export class ListItemComponent implements OnInit {
       this.productDetails.owner.name ===
       this.authenticationService.getUsername();
   }
+
+  buy(event: MouseEvent): void {
+    event.stopPropagation();
+    console.log(event);
+  }
 }
