@@ -1,8 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import {
-  forbiddenError,
-  unauthorizedError,
-} from '../services/generalErrorService';
+import { unauthorizedError } from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
 
 export default async function authenticate(
