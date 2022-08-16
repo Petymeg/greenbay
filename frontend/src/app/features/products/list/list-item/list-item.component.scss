@@ -26,14 +26,16 @@
       max-height: 100%;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
 
       img {
+        flex-grow: 1;
         object-fit: contain;
         max-height: 80%;
       }
 
       button {
+        margin-top: 10px;
+
         &.buy {
           background-color: green;
           color: white;
