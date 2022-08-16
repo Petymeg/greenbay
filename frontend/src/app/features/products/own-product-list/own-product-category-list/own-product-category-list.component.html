@@ -8,14 +8,12 @@
       <th>Price</th>
       <th>Status</th>
     </thead>
-    <tbody>
-      <tr *ngFor="let product of productList">
-        <td class="id">{{ product.id }}</td>
-        <td class="img"><img [src]="product.imgUrl" /></td>
-        <td>{{ product.name }}</td>
-        <td class="price">{{ product.price }}</td>
-        <td class="status">{{ ProductStatusTypes[product.status] }}</td>
-      </tr>
-    </tbody>
+    <tr
+      app-own-product-item
+      *ngFor="let product of productList"
+      [productData]="product"
+      [routerLink]="editable ? ['/products/edit/', product.id] : []"
+      [ngClass]="{ editable: editable }"
+    ></tr>
   </table>
 </div>

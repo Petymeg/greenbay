@@ -8,6 +8,7 @@ import { ViewComponent } from './view/view.component';
 import { AddComponent } from './add/add.component';
 import { OwnProductListComponent } from './own-product-list/own-product-list.component';
 import { OwnProductCategoryListComponent } from './own-product-list/own-product-category-list/own-product-category-list.component';
+import { OwnProductItemComponent } from './own-product-list/own-product-category-list/own-product-item/own-product-item.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { OwnProductCategoryListComponent } from './own-product-list/own-product-
     AddComponent,
     OwnProductListComponent,
     OwnProductCategoryListComponent,
+    OwnProductItemComponent,
   ],
   imports: [SharedModule, ProductsRoutingModule],
 })

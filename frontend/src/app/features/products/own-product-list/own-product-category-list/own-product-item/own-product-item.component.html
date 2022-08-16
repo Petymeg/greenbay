@@ -1,0 +1,11 @@
+<td class="id">{{ productData.id }}</td>
+<td class="img"><img [src]="productData.imgUrl" /></td>
+<td>
+  {{ productData.name }}
+</td>
+<td class="price">{{ productData.price }}</td>
+<td class="status">
+  <span [ngClass]="statusClass">{{
+    ProductStatusTypes[productData.status]
+  }}</span>
+</td>

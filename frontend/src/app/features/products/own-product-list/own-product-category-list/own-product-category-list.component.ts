@@ -11,8 +11,9 @@ export class OwnProductCategoryListComponent implements OnInit {
   @Input() productList: UserProductViewModel[];
   @Input() productCategory: string;
   ProductStatusTypes = ProductStatusTypes;
+  editable: boolean;
 
-  constructor() {}
-
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.editable = !(this.productCategory === 'Sold');
+  }
 }
