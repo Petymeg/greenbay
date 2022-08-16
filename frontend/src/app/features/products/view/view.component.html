@@ -28,7 +28,12 @@
           >
             {{ productStatusTypes[productDetails.status] }}
           </button>
-          <button *ngIf="isOwnProduct" mat-raised-button class="edit">
+          <button
+            *ngIf="isOwnProduct"
+            mat-raised-button
+            class="edit"
+            [routerLink]="['/products/edit', productDetails.id]"
+          >
             EDIT
           </button>
         </div>
