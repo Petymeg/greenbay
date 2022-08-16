@@ -3,16 +3,6 @@ td {
   padding: 5px;
   text-align: center;
 
-  &.id {
-    width: 30px;
-  }
-
-  &.status,
-  &.price,
-  &.img {
-    width: 70px;
-  }
-
   img {
     object-fit: contain;
     height: 50px;

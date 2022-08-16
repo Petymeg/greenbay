@@ -13,6 +13,16 @@
     th {
       border: 2px solid rgb(203, 243, 206);
       padding: 5px;
+
+      &.id {
+        width: 30px;
+      }
+
+      &.status,
+      &.price,
+      &.img {
+        width: 70px;
+      }
     }
 
     tr.editable {

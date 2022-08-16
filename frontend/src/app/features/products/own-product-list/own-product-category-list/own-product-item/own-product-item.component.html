@@ -1,10 +1,10 @@
-<td class="id">{{ productData.id }}</td>
-<td class="img"><img [src]="productData.imgUrl" /></td>
+<td>{{ productData.id }}</td>
+<td><img [src]="productData.imgUrl" /></td>
 <td>
   {{ productData.name }}
 </td>
-<td class="price">{{ productData.price }}</td>
-<td class="status">
+<td>{{ productData.price }}</td>
+<td>
   <span [ngClass]="statusClass">{{
     ProductStatusTypes[productData.status]
   }}</span>
