@@ -35,7 +35,7 @@ export class ErrorHandlerInterceptor implements HttpInterceptor {
         const { message } = error.error;
         const statusCode = error.status;
 
-        if (statusCode === 401 || message === 'Invalid token') {
+        if (statusCode === 401) {
           this.authService.logout();
         }
 
