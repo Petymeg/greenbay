@@ -1,7 +1,11 @@
 <div class="main-container">
   <div
     class="card-container"
-    [routerLink]="['/products/view', productDetails.id]"
+    [routerLink]="
+      isOwnProduct
+        ? ['/products/edit', productDetails.id]
+        : ['/products/view', productDetails.id]
+    "
   >
     <div class="left-container">
       <img [src]="productDetails.imgUrl" alt="product image" />
