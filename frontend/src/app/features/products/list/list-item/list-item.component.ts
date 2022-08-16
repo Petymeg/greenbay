@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
-import { ProductService } from 'src/app/core/services/product.service';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
 
 @Component({
@@ -12,10 +11,7 @@ export class ListItemComponent implements OnInit {
   @Input() productDetails: ProductWithOwnerViewModel;
   isOwnProduct: boolean;
 
-  constructor(
-    private authenticationService: AuthenticationService,
-    private productService: ProductService
-  ) {}
+  constructor(private authenticationService: AuthenticationService) {}
 
   ngOnInit(): void {
     this.isOwnProduct =
