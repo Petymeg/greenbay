@@ -5,6 +5,7 @@ import { map, Observable, tap } from 'rxjs';
 import { AddUserProductRequestViewModel } from 'src/app/shared/models/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from 'src/app/shared/models/AddUserProductViewModel';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
+import { UserProductViewModel } from 'src/app/shared/models/UserProductViewModel';
 import { environment } from 'src/environments/environment';
 import { SnackbarService } from './snackbar.service';
 
@@ -54,5 +55,11 @@ export class ProductService {
           this.snackBarService.showSuccessMessage('Purchase successful!');
         })
       );
+  }
+
+  getOwnProducts(): Observable<UserProductViewModel[]> {
+    return this.http.get<UserProductViewModel[]>(
+      `${environment.apiUrl}/user-info/products`
+    );
   }
 }
