@@ -1,5 +1,5 @@
 <div class="category-container">
-  <h1>{{ productCategory }} Products</h1>
+  <h1>{{ ProductStatusTypes[productList.statusCode] }} Products</h1>
   <table>
     <thead>
       <th>#</th>
@@ -10,7 +10,7 @@
     </thead>
     <tr
       app-own-product-item
-      *ngFor="let product of productList"
+      *ngFor="let product of productList.products"
       [productData]="product"
       [routerLink]="editable ? ['/products/edit/', product.id] : []"
       [ngClass]="{ editable: editable }"

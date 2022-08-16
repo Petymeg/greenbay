@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ProductStatusTypes } from 'src/app/shared/models/enums/ProductStatusTypes';
-import { UserProductViewModel } from 'src/app/shared/models/UserProductViewModel';
+import { UserProductStatusCategoryViewModel } from 'src/app/shared/models/UserProductStatusCategoryViewModel';
+import { getEnumValues } from 'src/app/shared/utilities/enumData';
 
 @Component({
   selector: 'app-own-product-list',
@@ -9,22 +10,20 @@ import { UserProductViewModel } from 'src/app/shared/models/UserProductViewModel
   styleUrls: ['./own-product-list.component.scss'],
 })
 export class OwnProductListComponent implements OnInit {
-  activeProducts: UserProductViewModel[];
-  inactiveProducts: UserProductViewModel[];
-  soldProducts: UserProductViewModel[];
+  productList: UserProductStatusCategoryViewModel[] = [];
   ProductStatusTypes = ProductStatusTypes;
 
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
     this.productService.getOwnProducts().subscribe((x) => {
-      this.activeProducts = x.filter(
-        (p) => p.status === ProductStatusTypes.Active
-      );
-      this.inactiveProducts = x.filter(
-        (p) => p.status === ProductStatusTypes.Inactive
-      );
-      this.soldProducts = x.filter((p) => p.status === ProductStatusTypes.Sold);
+      getEnumValues(ProductStatusTypes).forEach((statusCode) => {
+        const newStatusCategory: UserProductStatusCategoryViewModel = {
+          statusCode,
+          products: x.filter((p) => p.status === statusCode),
+        };
+        this.productList.push(newStatusCategory);
+      });
     });
   }
 }
