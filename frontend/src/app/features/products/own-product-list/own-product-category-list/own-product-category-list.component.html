@@ -1,0 +1,21 @@
+<div class="category-container">
+  <h1>{{ productCategory }} Products</h1>
+  <table>
+    <thead>
+      <th>#</th>
+      <th>IMG</th>
+      <th>Name</th>
+      <th>Price</th>
+      <th>Status</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of productList">
+        <td>{{ product.id }}</td>
+        <td><img [src]="product.imgUrl" /></td>
+        <td class="name">{{ product.name }}</td>
+        <td>{{ product.price }}</td>
+        <td>{{ ProductStatusTypes[product.status] }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

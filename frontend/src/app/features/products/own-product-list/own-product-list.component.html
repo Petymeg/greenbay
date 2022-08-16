@@ -1,1 +1,15 @@
-<p>own-product-list works!</p>
+<div class="main-container">
+  <div class="title">Manage Products</div>
+  <app-own-product-category-list
+    [productList]="activeProducts"
+    [productCategory]="'Active'"
+  ></app-own-product-category-list>
+  <app-own-product-category-list
+    [productList]="inactiveProducts"
+    [productCategory]="'Inactive'"
+  ></app-own-product-category-list>
+  <app-own-product-category-list
+    [productList]="soldProducts"
+    [productCategory]="'Sold'"
+  ></app-own-product-category-list>
+</div>
