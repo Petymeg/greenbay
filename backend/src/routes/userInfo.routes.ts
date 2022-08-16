@@ -26,4 +26,27 @@ const userInfoRouter = express.Router();
  */
 userInfoRouter.get('', userController.getUserInfo);
 
+/**
+ * @swagger
+ * /api/user-info/products:
+ *  get:
+ *      tags:
+ *      - USERINFO
+ *      description: Get user details
+ *      parameters:
+ *          - in: header
+ *            name: authorization
+ *            schema:
+ *              type: string
+ *              example: Bearer rh4b5b435njfd
+ *      responses:
+ *          200:
+ *              description: Data provided
+ *          404:
+ *              description: User not found
+ *          500:
+ *              description: Internal server error
+ */
+userInfoRouter.get('/products', userController.getUserProducts);
+
 export default userInfoRouter;

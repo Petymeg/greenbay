@@ -2,9 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import { UserLoginRequestViewModel } from '../models/common/UserLoginRequestViewModel';
 import { UserRegistrationRequestViewModel } from '../models/common/UserRegistrationRequestViewModel';
 import { UserInfoViewModel } from '../models/view/UserInfoViewModel';
+import { UserProductViewModel } from '../models/view/UserProductViewModel';
 import { UserRegistrationViewModel } from '../models/view/UserRegistrationViewModel';
 import { badRequestError } from '../services/generalErrorService';
 import { jwtService } from '../services/JwtService';
+import { productService } from '../services/productService';
 import { userService } from '../services/userService';
 
 export const userController = {
@@ -82,6 +84,24 @@ export const userController = {
       res.status(200).send(userInfo);
     } catch (error) {
       next(error);
+    }
+  },
+
+  async getUserProducts(
+    req: Request,
+    res: Response<UserProductViewModel[]>,
+    next: NextFunction
+  ) {
+    const token = jwtService.getTokenFromRequest(req);
+    const { userId } = jwtService.getTokenPayload(token);
+
+    await userService.checkIfUserIdExists(userId);
+
+    try {
+      const productList = await productService.getUserProducts(userId);
+      res.status(200).send(productList);
+    } catch (err) {
+      next(err);
     }
   },
 };

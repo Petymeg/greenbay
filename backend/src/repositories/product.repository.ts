@@ -118,4 +118,15 @@ export const productRepository = {
       `${productId}`,
     ]);
   },
+
+  getProductsByUserId(userId: number): Promise<UserProductDomainModel[]> {
+    const query = `SELECT
+                    *
+                  FROM
+                    userProducts
+                  WHERE
+                    userId = ?;`;
+
+    return db.query<UserProductDomainModel[]>(query, [`${userId}`]);
+  },
 };

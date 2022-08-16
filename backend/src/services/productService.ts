@@ -5,6 +5,7 @@ import { ProductStatusViewModel } from '../models/common/ProductStatusViewModel'
 import { UserProductDomainModel } from '../models/domain/UserProductDomainModel';
 import { ProductStatusTypes } from '../models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from '../models/view/ProductWithOwnerViewModel';
+import { UserProductViewModel } from '../models/view/UserProductViewModel';
 import { productRepository } from '../repositories/product.repository';
 import { userRepository } from '../repositories/user.repository';
 import {
@@ -151,5 +152,9 @@ export const productService = {
       imgUrl,
       price
     );
+  },
+
+  getUserProducts(userId: number): Promise<UserProductViewModel[]> {
+    return productRepository.getProductsByUserId(userId);
   },
 };
