@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, tap } from 'rxjs';
+import { map, Observable, Subject, tap } from 'rxjs';
 import { AddUserProductRequestViewModel } from 'src/app/shared/models/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from 'src/app/shared/models/AddUserProductViewModel';
 import { EditProductRequestViewModel } from 'src/app/shared/models/EditProductRequestViewModel';
@@ -15,16 +15,22 @@ import { SnackbarService } from './snackbar.service';
   providedIn: 'root',
 })
 export class ProductService {
+  private sellableItems = new Subject<ProductWithOwnerViewModel[]>();
+  sellableItems$ = this.sellableItems.asObservable();
+
   constructor(
     private http: HttpClient,
     private router: Router,
     private snackBarService: SnackbarService
-  ) {}
+  ) {
+    console.log('productService');
+    this.getSellableItems();
+  }
 
-  getSellableItems(): Observable<ProductWithOwnerViewModel[]> {
-    return this.http.get<ProductWithOwnerViewModel[]>(
-      `${environment.apiUrl}/product`
-    );
+  getSellableItems(): void {
+    this.http
+      .get<ProductWithOwnerViewModel[]>(`${environment.apiUrl}/product`)
+      .subscribe((x) => this.sellableItems.next(x));
   }
 
   getProductDetails(productId: number): Observable<ProductWithOwnerViewModel> {
@@ -54,6 +60,7 @@ export class ProductService {
       })
       .pipe(
         tap(() => {
+          // this.userService.getMainInfo();
           this.snackBarService.showSuccessMessage('Purchase successful!');
         })
       );

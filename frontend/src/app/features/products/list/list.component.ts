@@ -19,7 +19,8 @@ export class ListComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.productService.getSellableItems().subscribe((x) => {
+    this.productService.getSellableItems();
+    this.productService.sellableItems$.subscribe((x) => {
       this.products = x;
       this.setViewableProducts();
     });
