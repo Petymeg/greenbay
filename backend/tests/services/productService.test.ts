@@ -539,8 +539,8 @@ describe('productService.buyProduct', () => {
     );
     expect(productRepository.setStatusById).toHaveBeenCalledTimes(1);
     expect(productRepository.setStatusById).toHaveBeenCalledWith(
-      productData.status,
-      productId
+      productId,
+      ProductStatusTypes.Sold
     );
     expect(userRepository.deductProductPrice).toHaveBeenCalledTimes(1);
     expect(userRepository.deductProductPrice).toHaveBeenCalledWith(

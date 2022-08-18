@@ -380,7 +380,7 @@ describe('productController.getProduct()', () => {
   });
 });
 
-describe('productController.getProduct()', () => {
+describe('productController.buyProduct()', () => {
   const token = 'asdkfahdlfkas';
   const tokenData = {
     userId: 20,
@@ -396,7 +396,7 @@ describe('productController.getProduct()', () => {
   it('Error code 400 when no productId is provided', async () => {
     //Arrange
     //Act
-    const result = await request(app).post(`/api/product/buy`).send({});
+    const result = await request(app).put(`/api/product/buy`).send({});
 
     //Assert
     expect(result.statusCode).toEqual(400);
@@ -409,7 +409,7 @@ describe('productController.getProduct()', () => {
 
     //Act
     const result = await request(app)
-      .post(`/api/product/buy`)
+      .put(`/api/product/buy`)
       .send({ productId });
 
     //Assert
@@ -428,7 +428,7 @@ describe('productController.getProduct()', () => {
 
     //Act
     const result = await request(app)
-      .post(`/api/product/buy`)
+      .put(`/api/product/buy`)
       .send({ productId });
 
     //Assert
