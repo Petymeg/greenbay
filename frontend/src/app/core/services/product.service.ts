@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { map, Observable, tap } from 'rxjs';
 import { AddUserProductRequestViewModel } from 'src/app/shared/models/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from 'src/app/shared/models/AddUserProductViewModel';
+import { EditProductRequestViewModel } from 'src/app/shared/models/EditProductRequestViewModel';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
 import { UserProductViewModel } from 'src/app/shared/models/UserProductViewModel';
 import { environment } from 'src/environments/environment';
@@ -61,5 +62,15 @@ export class ProductService {
     return this.http.get<UserProductViewModel[]>(
       `${environment.apiUrl}/user-info/products`
     );
+  }
+
+  editProduct(productDetails: EditProductRequestViewModel): Observable<void> {
+    return this.http
+      .put<void>(`${environment.apiUrl}/product`, productDetails)
+      .pipe(
+        tap(() => {
+          this.snackBarService.showSuccessMessage('Update successful!');
+        })
+      );
   }
 }

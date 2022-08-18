@@ -8,6 +8,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ProductService } from 'src/app/core/services/product.service';
+import { EditProductRequestViewModel } from 'src/app/shared/models/EditProductRequestViewModel';
 import { ProductStatusTypes } from 'src/app/shared/models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
 
@@ -19,6 +20,7 @@ import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwne
 export class EditComponent implements OnInit {
   productDetails: ProductWithOwnerViewModel;
   productStatusTypes = ProductStatusTypes;
+  status: boolean;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
     description: new FormControl('', Validators.required),
@@ -28,8 +30,6 @@ export class EditComponent implements OnInit {
     ]),
     price: new FormControl(10, Validators.required),
   });
-  status: boolean;
-  isImgURLValid: boolean;
 
   constructor(
     private productService: ProductService,
@@ -45,14 +45,15 @@ export class EditComponent implements OnInit {
   }
 
   init(productId: number): void {
-    this.productService
-      .getProductDetails(productId)
-      .subscribe(({ name, description, price, status, imgUrl, owner }) => {
-        this.form.setValue({ name, description, price, imgUrl });
-        this.status = !!status;
-        if (owner.name !== this.authenticationService.getUsername())
-          this.router.navigate(['/products/view', productId]);
-      });
+    this.productService.getProductDetails(productId).subscribe((x) => {
+      if (x.owner.name !== this.authenticationService.getUsername())
+        this.router.navigate(['/products/view', productId]);
+
+      const { name, description, price, imgUrl } = x;
+      this.productDetails = x;
+      this.status = !!x.status;
+      this.form.setValue({ name, description, price, imgUrl });
+    });
   }
   get name(): AbstractControl {
     return this.form.get('name') as AbstractControl;
@@ -72,7 +73,15 @@ export class EditComponent implements OnInit {
 
   editProduct(): void {
     if (this.form.valid) {
-      console.log(this.form.getRawValue());
+      const { name, description, imgUrl, price } = this.form.getRawValue();
+      const requestData: EditProductRequestViewModel = {
+        productId: this.productDetails.id,
+        name,
+        description,
+        imgUrl,
+        price,
+      };
+      this.productService.editProduct(requestData).subscribe();
     }
   }
 }
