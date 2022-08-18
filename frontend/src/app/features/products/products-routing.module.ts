@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddComponent } from './add/add.component';
+import { EditComponent } from './edit/edit.component';
 import { ListComponent } from './list/list.component';
 import { OwnProductListComponent } from './own-product-list/own-product-list.component';
 import { ProductsComponent } from './products.component';
@@ -12,8 +13,9 @@ const routes: Routes = [
     component: ProductsComponent,
     children: [
       { path: 'list', component: ListComponent },
-      { path: 'view/:id', component: ViewComponent },
       { path: 'add', component: AddComponent },
+      { path: 'view/:id', component: ViewComponent },
+      { path: 'edit/:id', component: EditComponent },
       { path: 'own', component: OwnProductListComponent },
       { path: '', redirectTo: 'list', pathMatch: 'full' },
     ],

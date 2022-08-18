@@ -9,6 +9,7 @@ import { AddComponent } from './add/add.component';
 import { OwnProductListComponent } from './own-product-list/own-product-list.component';
 import { OwnProductCategoryListComponent } from './own-product-list/own-product-category-list/own-product-category-list.component';
 import { OwnProductItemComponent } from './own-product-list/own-product-category-list/own-product-item/own-product-item.component';
+import { EditComponent } from './edit/edit.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { OwnProductItemComponent } from './own-product-list/own-product-category
     OwnProductListComponent,
     OwnProductCategoryListComponent,
     OwnProductItemComponent,
+    EditComponent,
   ],
   imports: [SharedModule, ProductsRoutingModule],
 })

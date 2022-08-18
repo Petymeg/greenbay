@@ -1,0 +1,38 @@
+<div class="main-container">
+  <div class="title">Add a new product</div>
+  <form [formGroup]="form">
+    <mat-form-field appearance="outline">
+      <mat-label class="name">Name</mat-label>
+      <input matInput formControlName="name" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label class="description">Description</mat-label>
+      <input matInput formControlName="description" />
+      <mat-error
+        *ngIf="name.hasError('required') || description.hasError('required')"
+      >
+        Name and description are required!</mat-error
+      >
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label class="imgUrl">Image URL</mat-label>
+      <input matInput formControlName="imgUrl" />
+      <mat-error *ngIf="imgUrl.hasError('pattern')">
+        Image URL is invalid!</mat-error
+      >
+    </mat-form-field>
+    <img [src]="imgUrl.value" />
+    <mat-form-field appearance="outline">
+      <mat-label class="price">Price (USD)</mat-label>
+      <input type="number" min="1" matInput formControlName="price" />
+      <mat-error *ngIf="price.hasError('required') || price.invalid">
+        Please provide a price that is greater than 0!</mat-error
+      >
+    </mat-form-field>
+    <div class="button-container">
+      <div class="edit-product">
+        <button mat-raised-button (click)="editProduct()">SUBMIT</button>
+      </div>
+    </div>
+  </form>
+</div>
