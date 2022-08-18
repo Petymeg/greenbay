@@ -8,4 +8,12 @@
   <span [ngClass]="statusClass">{{
     ProductStatusTypes[productData.status]
   }}</span>
+  <mat-slide-toggle
+    *ngIf="productData.status !== ProductStatusTypes.Sold"
+    color="primary"
+    [(ngModel)]="productData.status"
+    [ngModelOptions]="{ standalone: true }"
+    (change)="toggleStatus()"
+    (click)="$event.stopPropagation()"
+  ></mat-slide-toggle>
 </td>

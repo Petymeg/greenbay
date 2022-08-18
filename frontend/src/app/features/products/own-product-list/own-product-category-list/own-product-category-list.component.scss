@@ -21,7 +21,7 @@
       &.status,
       &.price,
       &.img {
-        width: 70px;
+        width: 80px;
       }
     }
 
@@ -33,7 +33,7 @@
           3px 0px 5px rgba(0, 0, 0, 0.267), -3px 0px 5px rgba(0, 0, 0, 0.267),
           0px -3px 5px rgba(0, 0, 0, 0.267);
         position: relative;
-        z-index: 2;
+        z-index: 1;
       }
     }
   }
