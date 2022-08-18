@@ -19,7 +19,7 @@ import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwne
 })
 export class EditComponent implements OnInit {
   productDetails: ProductWithOwnerViewModel;
-  productStatusTypes = ProductStatusTypes;
+  ProductStatusTypes = ProductStatusTypes;
   status: boolean;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -87,8 +87,8 @@ export class EditComponent implements OnInit {
 
   toggleStatus(): void {
     const newStatus = this.status
-      ? this.productStatusTypes.Active
-      : this.productStatusTypes.Inactive;
+      ? this.ProductStatusTypes.Active
+      : this.ProductStatusTypes.Inactive;
 
     this.productService
       .setProductStatus(this.productDetails.id, newStatus)
