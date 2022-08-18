@@ -153,7 +153,7 @@ productRouter.get('/:productId', productController.getProduct);
 /**
  * @swagger
  * /api/product/buy:
- *  post:
+ *  put:
  *      tags:
  *      - PRODUCT
  *      description: Buy a product
@@ -186,7 +186,7 @@ productRouter.get('/:productId', productController.getProduct);
  *          500:
  *              description: Internal server error
  */
-productRouter.post('/buy', productController.buyProduct);
+productRouter.put('/buy', productController.buyProduct);
 
 /**
  * @swagger

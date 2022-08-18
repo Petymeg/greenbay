@@ -47,7 +47,7 @@ export class ProductService {
 
   buyProduct(productId: number): Observable<void> {
     return this.http
-      .post<void>(`${environment.apiUrl}/product/buy`, {
+      .put<void>(`${environment.apiUrl}/product/buy`, {
         productId,
       })
       .pipe(
