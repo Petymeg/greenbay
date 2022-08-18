@@ -84,4 +84,14 @@ export class EditComponent implements OnInit {
       this.productService.editProduct(requestData).subscribe();
     }
   }
+
+  toggleStatus(): void {
+    const newStatus = this.status
+      ? this.productStatusTypes.Active
+      : this.productStatusTypes.Inactive;
+
+    this.productService
+      .setProductStatus(this.productDetails.id, newStatus)
+      .subscribe();
+  }
 }

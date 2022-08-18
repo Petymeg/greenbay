@@ -5,6 +5,7 @@ import { map, Observable, tap } from 'rxjs';
 import { AddUserProductRequestViewModel } from 'src/app/shared/models/AddUserProductRequestViewModel';
 import { AddUserProductViewModel } from 'src/app/shared/models/AddUserProductViewModel';
 import { EditProductRequestViewModel } from 'src/app/shared/models/EditProductRequestViewModel';
+import { ProductStatusTypes } from 'src/app/shared/models/enums/ProductStatusTypes';
 import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwnerViewModel';
 import { UserProductViewModel } from 'src/app/shared/models/UserProductViewModel';
 import { environment } from 'src/environments/environment';
@@ -70,6 +71,21 @@ export class ProductService {
       .pipe(
         tap(() => {
           this.snackBarService.showSuccessMessage('Update successful!');
+        })
+      );
+  }
+
+  setProductStatus(productId: number, statusCode: number): Observable<void> {
+    return this.http
+      .put<void>(`${environment.apiUrl}/product/setstatus`, {
+        productId,
+        statusCode,
+      })
+      .pipe(
+        tap(() => {
+          this.snackBarService.showSuccessMessage(
+            `Status changed to ${ProductStatusTypes[statusCode]}!`
+          );
         })
       );
   }

@@ -30,9 +30,13 @@
       >
     </mat-form-field>
     Status:
-    <mat-slide-toggle color="primary" [(ngModel)]="status">{{
-      status ? "Active" : "Inavtive"
-    }}</mat-slide-toggle>
+    <mat-slide-toggle
+      color="primary"
+      [(ngModel)]="status"
+      [ngModelOptions]="{ standalone: true }"
+      (change)="toggleStatus()"
+      >{{ status ? "Active" : "Inactive" }}</mat-slide-toggle
+    >
     <div class="button-container">
       <div class="edit-product">
         <button mat-raised-button (click)="editProduct()">
