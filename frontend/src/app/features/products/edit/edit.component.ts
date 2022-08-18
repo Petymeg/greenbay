@@ -5,7 +5,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/core/services/authentication.service';
 import { ProductService } from 'src/app/core/services/product.service';
 import { ProductStatusTypes } from 'src/app/shared/models/enums/ProductStatusTypes';
@@ -18,7 +18,6 @@ import { ProductWithOwnerViewModel } from 'src/app/shared/models/ProductWithOwne
 })
 export class EditComponent implements OnInit {
   productDetails: ProductWithOwnerViewModel;
-  isOwnProduct: boolean;
   productStatusTypes = ProductStatusTypes;
   form = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -35,6 +34,7 @@ export class EditComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private activatedRoute: ActivatedRoute,
+    private router: Router,
     private authenticationService: AuthenticationService
   ) {}
 
@@ -50,8 +50,8 @@ export class EditComponent implements OnInit {
       .subscribe(({ name, description, price, status, imgUrl, owner }) => {
         this.form.setValue({ name, description, price, imgUrl });
         this.status = !!status;
-        this.isOwnProduct =
-          owner.name === this.authenticationService.getUsername();
+        if (owner.name !== this.authenticationService.getUsername())
+          this.router.navigate(['/products/view', productId]);
       });
   }
   get name(): AbstractControl {
