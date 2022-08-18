@@ -1,6 +1,7 @@
 <div class="main-container">
   <div class="title">Edit your product</div>
   <form [formGroup]="form">
+    <img [src]="imgUrl.value" />
     <mat-form-field appearance="outline">
       <mat-label class="name">Name</mat-label>
       <input matInput formControlName="name" />
@@ -21,7 +22,6 @@
         Image URL is invalid!</mat-error
       >
     </mat-form-field>
-    <img [src]="imgUrl.value" />
     <mat-form-field appearance="outline">
       <mat-label class="price">Price (USD)</mat-label>
       <input type="number" min="1" matInput formControlName="price" />
